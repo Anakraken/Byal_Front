@@ -1,24 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useState } from 'react';
+import { Modal } from './components/Modals';
+import { Button } from './components/Buttons';
 import './App.css';
 
 function App() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const toggle = () => setIsModalVisible(!isModalVisible)
+ 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Byal app</h1>
+      <button onClick={toggle}>Show modal</button>
+      <Modal 
+      onBackClick={toggle}
+      isVisible={isModalVisible}
+      variant='error'
+      message='yeiiii estoy funcionando'
+      >
+        <Button onClick={()=> console.log('working')}>CLOSE</Button>
+      </Modal>
     </div>
   );
 }
