@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Modal } from './components/Modals';
 import { Button } from './components/Buttons';
-import './App.css';
 
 function App() {
   const [isModalVisible, setIsModalVisible] = useState(false);
