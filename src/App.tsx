@@ -1,25 +1,14 @@
-import { useState } from 'react';
-import { Modal } from './components/Modals';
-import { Button } from './components/Buttons';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const toggle = () => setIsModalVisible(!isModalVisible)
- 
   return (
-    <div className="App">
-      <h1>Byal app</h1>
-      <button onClick={toggle}>Show modal</button>
-      <Modal 
-      onBackClick={toggle}
-      isVisible={isModalVisible}
-      variant='error'
-      message='yeiiii estoy funcionando'
-      >
-        <Button onClick={()=> console.log('working')}>CLOSE</Button>
-      </Modal>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<h1>Home page</h1>} />
+        <Route path='/login' element={<h1>Login</h1>}/>
+        <Route path='/register' element={<h1>Register</h1>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
