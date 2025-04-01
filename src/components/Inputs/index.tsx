@@ -6,6 +6,7 @@ type InputProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string | number;
   name: string;
+  label: string;
   message?: string;
   error?: boolean;
 }
@@ -16,9 +17,9 @@ export const Input = ({
   value, 
   onChange, 
   message, 
-  error
+  error,
+  label
 }:InputProps) => {
-  // Generar un ID seguro basado en label
   const formattedName = name.replace(/\s+/g, "_").toLowerCase();
 
   return (
@@ -29,7 +30,7 @@ export const Input = ({
       type={type ? type : 'text'} 
       name={name}
       value={value || ""}
-      placeholder={name?.toString()}
+      placeholder={label?.toString()}
       onChange={onChange}
       className='input_text'
       />
@@ -37,7 +38,7 @@ export const Input = ({
       htmlFor={formattedName}
       className='input_label'
       >
-         <label>{name}</label>
+         <label>{label}</label>
       </label> 
     </div>
 
