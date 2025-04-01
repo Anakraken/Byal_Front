@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors } from "../../lib/Theme";
 
 type InputContainerProps = {
   error?: string;
@@ -29,13 +30,14 @@ export const InputContainer = styled.div<InputContainerProps>`
 );
 
   width: 100%;
-  height: ${({ error }) => (!!error && error === 'true' ? "78px" : "60px")};
+  height: ${({ error }) => (!!error && error === 'true' ? "80px" : "60px")};
   display: flex;
   flex-direction: column;
   justify-content: end;
 
   .error {
     padding-left: 15px;
+    color: ${colors.error};
   }
 
   .input {
@@ -106,5 +108,14 @@ export const InputContainer = styled.div<InputContainerProps>`
       transform var(--transitionDuration),
       visibility 0ms,
       z-index 0ms;
+  }
+`;
+
+export const InputPasswordContainer = styled(InputContainer)`
+  height: ${({ error }) => (!!error && error === 'true' ? "103px" : "83px")};
+
+  .checkbox {
+    padding-left: 15px;
+    margin-bottom: 3px;
   }
 `;

@@ -3,13 +3,11 @@ export const colors = {
   shadow: '#3432c768',
   inactive: '#E5E4F8',
   overlay: '#AEADE9',
-  border: '#323232'
+  border: '#323232',
+  error: '#D30000',
+  success: '#46CB18',
+  warning: '#FFDE21'
 }
-
-// D30000 rojo
-// 46CB18 verde
-// 3432C7 primario
-// FFDE21 amarillo
 
 const size = {
   mobileXS: '281px',

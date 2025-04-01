@@ -1,8 +1,11 @@
-import React from "react";
-import { InputContainer } from "./InputStyles.styles";
+import React, {useState} from "react";
+import { InputContainer, InputPasswordContainer } from "./InputStyles.styles";
+import { CheckBox } from "./CheckBox";
+
+type InputTypes = 'text' | 'password' | 'email';
 
 type InputProps = {
-  type?: string;
+  type?: InputTypes;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string | number;
   name: string;
@@ -18,9 +21,44 @@ export const Input = ({
   onChange, 
   message, 
   error,
-  label
+  label,
 }:InputProps) => {
   const formattedName = name.replace(/\s+/g, "_").toLowerCase();
+  const [inputType, setInputType] = useState('text');
+
+  const handleShow = () => {
+    const setType =  inputType === 'text' ? 'password' : 'text';
+    setInputType(setType);
+  }
+
+  if(!!type && type === 'password') return (
+    <InputPasswordContainer error={error?.toString()}>
+    <div className='input'>
+      <input
+      id={formattedName}
+      type={inputType}
+      name={name}
+      value={value || ""}
+      placeholder={label?.toString()}
+      onChange={onChange}
+      className='input_text'
+      />
+      <label
+      htmlFor={formattedName}
+      className='input_label'
+      >
+         <label>{label}</label>
+      </label> 
+    </div>
+
+    <CheckBox
+    onChange={handleShow}
+    label={inputType === 'password' ? 'Mostrar contraseña' : 'Ocultar contraseña'}
+    />
+   
+    {!!error && <p className='error'>{message}</p>}
+  </InputPasswordContainer>
+  );
 
   return (
   <InputContainer error={error?.toString()}>
@@ -44,5 +82,5 @@ export const Input = ({
 
     {!!error && <p className='error'>{message}</p>}
   </InputContainer>
-)
+  )
 };

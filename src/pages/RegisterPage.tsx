@@ -24,8 +24,8 @@ export const RegisterPage = () => {
       name='username'
       value={dataInput.username}
       onChange={handleInput}
-      // error={true}
-      // message={'Nombre no valido, intenta de nuevo'}
+      error={true}
+      message={'Nombre no valido, intenta de nuevo'}
       />
       <Input 
       type="email"
@@ -33,18 +33,18 @@ export const RegisterPage = () => {
       name='email'
       value={dataInput.email}
       onChange={handleInput}
-      // error={false}
-      // message={'Correo no valido, intenta de nuevo'}
+      error={true}
+      message={'Correo no valido, intenta de nuevo'}
       />
-      <Input 
+     <Input 
       type="password"
       label='Contraseña'
       name='password'
       value={dataInput.password}
       onChange={handleInput}
-      // error={false}
-      // message={'Contraseña no valido, Debe tener minimo 6 caracteres'}
-      />
+      error={true}
+      message={'Contraseña no valido, Debe tener minimo 6 caracteres'}
+      /> 
       </form>
     </div> 
   )
