@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../lib/Theme";
+import { colors, device } from "../../lib/Theme";
 
 type InputContainerProps = {
   error?: string;
@@ -14,8 +14,8 @@ export const InputContainer = styled.div<InputContainerProps>`
 
 /* Input */
 --transitionDuration: 300ms;
---inputFontSize: 16px;
---inputLineHeight: 1.3;
+--inputFontSize: 20px;
+--inputLineHeight: 1.4;
 --transitionTF: cubic-bezier(0.645, 0.045, 0.355, 1);
   
 /* floated labels */
@@ -30,13 +30,13 @@ export const InputContainer = styled.div<InputContainerProps>`
 );
 
   width: 100%;
-  height: ${({ error }) => (!!error && error === 'true' ? "80px" : "60px")};
+  height: ${({ error }) => (!!error && error === 'true' ? "105px" : "85px")};  
   display: flex;
   flex-direction: column;
   justify-content: end;
 
   .error {
-    padding-left: 15px;
+    padding-left: 5px;
     color: ${colors.error};
   }
 
@@ -73,7 +73,7 @@ export const InputContainer = styled.div<InputContainerProps>`
     display: block;
     position: absolute;
     bottom: 50%;
-    left: 1rem;
+    left: 5px;
     color: rgb(0, 0, 0);
     font-family: inherit;
     font-size: var(--inputFontSize);
@@ -112,10 +112,14 @@ export const InputContainer = styled.div<InputContainerProps>`
 `;
 
 export const InputPasswordContainer = styled(InputContainer)`
-  height: ${({ error }) => (!!error && error === 'true' ? "103px" : "83px")};
+  height: ${({ error }) => (!!error && error === 'true' ? "133px" : "108px")};
 
+  @media ${device.mobile} {
+    height: ${({ error }) => (!!error && error === 'true' ? "148px" : "93px")};
+  }
+    
   .checkbox {
-    padding-left: 15px;
+    padding-left: 10px;
     margin-bottom: 3px;
   }
 `;

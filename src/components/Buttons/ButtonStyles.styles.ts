@@ -12,13 +12,16 @@ export const PrimaryButton = styled.button`
   /* padding: 0 10px; */
 `;
 
-export const CustomButton = styled(PrimaryButton)`
+type CustomButtonProps = {
+  linewidth?: string;
+};
+export const CustomButton = styled(PrimaryButton)<CustomButtonProps>`
   //-PRIMARY-//
   color: white;
-  background: ${colors.primary};
+  background-color: ${colors.primary};
   box-shadow: 0 0 10px ${colors.shadow};
   &:hover{
-    opacity: 0.7;
+    background: ${colors.primaryOver};
   }
   
   //-LINK-//
@@ -26,23 +29,31 @@ export const CustomButton = styled(PrimaryButton)`
     background: transparent;
     box-shadow: 0 0 0 0;
     color: ${colors.primary};
-    text-decoration: underline;
+    text-align: center;
+    /* text-decoration: underline; */
+
+    a {
+      width: fit-content;
+    }
+
+    a::after {
+      content: "";
+      display: block;
+      width: ${({ linewidth }) => (!!linewidth && linewidth || "100%")};
+      height: 1px;
+      background: ${colors.primary};
+      transition: width 0.3s;
+      margin: 0 auto;
+    }
    }
   &.link:hover{
-    opacity: 0.7;
+    cursor: pointer;
+    background-color: aliceblue;
+    border-radius: 6px;
+    /* text-decoration: none; */
+    
+    a::after {
+      width: 0;
+    }
   }
 `;
-
-
-// a::after {
-//   content: "";
-//   display: block;
-//   width: 0;
-//   height: 2px;
-//   background: blue;
-//   transition: width 0.3s;
-// }
-
-// a:hover::after {
-//   width: 100%;
-// }

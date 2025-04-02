@@ -24,7 +24,7 @@ export const Input = ({
   label,
 }:InputProps) => {
   const formattedName = name.replace(/\s+/g, "_").toLowerCase();
-  const [inputType, setInputType] = useState('text');
+  const [inputType, setInputType] = useState('password');
 
   const handleShow = () => {
     const setType =  inputType === 'text' ? 'password' : 'text';

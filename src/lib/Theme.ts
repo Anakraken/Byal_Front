@@ -1,8 +1,8 @@
 export const colors = {
   primary: '#3432C7',
+  primaryOver: '#343270',
   shadow: '#3432c768',
   inactive: '#E5E4F8',
-  overlay: '#AEADE9',
   border: '#323232',
   error: '#D30000',
   success: '#46CB18',
@@ -32,3 +32,6 @@ export const device = {
   desktopL: `(max-width: ${size.desktop})`,
   height: `(min-height: ${size.height})`
 };
+/* @media ${device.mobile} {
+    height: ${({ error }) => (!!error && error === 'true' ? "143px" : "93px")};
+  } */
