@@ -22,6 +22,7 @@ export const RegisterPage = () => {
     <AuthLayout
     buttonText='Crear usuario'
     linkText='Iniciar sesión'
+    link='/login'
     >
       <Input 
       type="text"

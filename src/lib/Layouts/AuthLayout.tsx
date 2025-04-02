@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { colors } from "../Theme";
 import { Button } from "../../components/Buttons";
+import { useNavigate } from "react-router-dom";
 
 type AuthLayoutProps = {
   children: React.ReactNode;
@@ -32,6 +33,12 @@ const AuthContainer = styled.div`
 `;
 
 export const AuthLayout = ({buttonText, link, linkText, children}:AuthLayoutProps) => {
+  const navigate = useNavigate();
+
+  const handleLink = () => {
+    navigate(`${link}`);
+  }
+  
   return (
     <AuthContainer>
       <h1>BYAL</h1>
@@ -45,7 +52,7 @@ export const AuthLayout = ({buttonText, link, linkText, children}:AuthLayoutProp
         <br/><br/>
         <Button 
          variant="link" 
-         onClick={()=> console.log('liiiiiink')}
+         onClick={handleLink}
          linewidth='100px'
          >
           <a>{linkText}</a>

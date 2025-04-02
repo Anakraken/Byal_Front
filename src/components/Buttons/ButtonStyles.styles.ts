@@ -19,9 +19,10 @@ export const CustomButton = styled(PrimaryButton)<CustomButtonProps>`
   //-PRIMARY-//
   color: white;
   background-color: ${colors.primary};
+  transition: background-color 0.5s;
   box-shadow: 0 0 10px ${colors.shadow};
   &:hover{
-    background: ${colors.primaryOver};
+    background-color: ${colors.primaryOver};
   }
   
   //-LINK-//
@@ -30,7 +31,6 @@ export const CustomButton = styled(PrimaryButton)<CustomButtonProps>`
     box-shadow: 0 0 0 0;
     color: ${colors.primary};
     text-align: center;
-    /* text-decoration: underline; */
 
     a {
       width: fit-content;
@@ -50,7 +50,6 @@ export const CustomButton = styled(PrimaryButton)<CustomButtonProps>`
     cursor: pointer;
     background-color: aliceblue;
     border-radius: 6px;
-    /* text-decoration: none; */
     
     a::after {
       width: 0;
