@@ -18,7 +18,7 @@ function App() {
 
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/register' element={<RegisterPage/>}/>
-        <Route path="*" element={<h1>No encontrado</h1>} /> {/* Ruta para páginas no encontradas */}
+        <Route path="*" element={<h1>No encontrado</h1>} />
       </Routes>
     </BrowserRouter>
   );

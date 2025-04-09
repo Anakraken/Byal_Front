@@ -10,7 +10,7 @@ export const colors = {
 }
 
 const size = {
-  mobileXS: '281px',
+  mobileXS: '286px',
   mobileS: '321px',
   mobileM: '375px',
   mobileL: '425px',

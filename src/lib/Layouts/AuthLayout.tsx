@@ -8,6 +8,7 @@ type AuthLayoutProps = {
   buttonText: string;
   linkText: string;
   link?: string;
+  onSubmit?: () => void;
 };
 
 const AuthContainer = styled.div`
@@ -30,9 +31,14 @@ const AuthContainer = styled.div`
     padding: 10px;
     width: 85%;
   }
+
+  .error {
+    color: ${colors.error};
+    margin-top: 15px;
+  }
 `;
 
-export const AuthLayout = ({buttonText, link, linkText, children}:AuthLayoutProps) => {
+export const AuthLayout = ({buttonText, link, onSubmit, linkText, children}:AuthLayoutProps) => {
   const navigate = useNavigate();
 
   const handleLink = () => {
@@ -42,7 +48,7 @@ export const AuthLayout = ({buttonText, link, linkText, children}:AuthLayoutProp
   return (
     <AuthContainer>
       <h1>BYAL</h1>
-      <form action={()=> console.log('working')}>
+      <form action={onSubmit}>
         {children}
         <br/><br/>
         <Button submit>

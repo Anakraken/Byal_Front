@@ -35,6 +35,10 @@ export const InputContainer = styled.div<InputContainerProps>`
   flex-direction: column;
   justify-content: end;
 
+  @media ${device.mobileM} {
+    height: ${({ error }) => (!!error && error === 'true' ? "115px" : "85px")};
+  } 
+
   .error {
     padding-left: 5px;
     color: ${colors.error};
@@ -112,12 +116,18 @@ export const InputContainer = styled.div<InputContainerProps>`
 `;
 
 export const InputPasswordContainer = styled(InputContainer)`
-  height: ${({ error }) => (!!error && error === 'true' ? "133px" : "108px")};
+  height: ${({ error }) => (!!error && error === 'true' ? "123px" : "108px")};
 
   @media ${device.mobile} {
-    height: ${({ error }) => (!!error && error === 'true' ? "148px" : "93px")};
+    height: ${({ error }) => (!!error && error === 'true' ? "143px" : "93px")};
   }
-    
+  @media ${device.mobileS} {
+    height: ${({ error }) => (!!error && error === 'true' ? "143px" : "93px")};
+  } 
+  @media ${device.mobileXS} {
+    height: ${({ error }) => (!!error && error === 'true' ? "153px" : "93px")};
+  } 
+
   .checkbox {
     padding-left: 10px;
     margin-bottom: 3px;

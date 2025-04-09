@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { InputContainer, InputPasswordContainer } from "./InputStyles.styles";
 import { CheckBox } from "./CheckBox";
 
-type InputTypes = 'text' | 'password' | 'email';
+type InputTypes = 'text' | 'password' | 'email' | 'tel';
 
 type InputProps = {
   type?: InputTypes;
