@@ -1,9 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { registerRequest, loginRequest} from '../../api/auth';
+import { RegisterFormDataProps, LoginFormDataProps} from '../../../lib/types/authType';
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
-  async (userData: { email: string; username?: string; password: string }, thunkAPI) => {
+  async (userData: RegisterFormDataProps, thunkAPI) => {
     try {
       const response = await registerRequest(userData);
       return {
@@ -11,14 +12,14 @@ export const registerUser = createAsyncThunk(
         status: response.status
       };
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
-  async (userData: { email: string; password: string }, thunkAPI) => {
+  async (userData: LoginFormDataProps, thunkAPI) => {
     try {
       const response = await loginRequest(userData);
       return {
@@ -26,7 +27,7 @@ export const loginUser = createAsyncThunk(
         status: response.status
       };
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );

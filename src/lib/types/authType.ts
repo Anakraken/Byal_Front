@@ -1,9 +1,9 @@
-type LoginFormDataProps = {
+export type LoginFormDataProps = {
   email: string;
   password: string;
 };
 
-type RegisterFormDataProps = LoginFormDataProps & {
+export type RegisterFormDataProps = LoginFormDataProps & {
   username: string;
 };
 

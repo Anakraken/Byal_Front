@@ -6,10 +6,16 @@ import { registerUser } from '../redux/features/auth/authThunks';
 import { useAppDispatch, useAppSelector } from '../redux/features/hooks';
 import { name_validate, password_validate, email_validate } from '../lib/form-validations';
 import { RegisterForm, ValidateRegisterForm } from '../lib/types/authType';
+import { clearAuthError } from '../redux/features/auth/authSlice';
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  //Clear global errors
+  useEffect(() => {
+    dispatch(clearAuthError());
+  }, []);
 
   //Local state
   const [dataInput, setDataInput] = useState(RegisterForm);  
@@ -43,9 +49,6 @@ export const RegisterPage = () => {
       .then(() => {
         navigate('/dashboard')
       })
-      .catch((err) => {
-        console.log(err)
-      });
 };
 
   return (

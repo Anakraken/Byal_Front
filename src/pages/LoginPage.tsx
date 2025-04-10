@@ -43,9 +43,6 @@ export const LoginPage = () => {
          .then(() => {
            navigate('/dashboard')
          })
-         .catch((err) => {
-           console.log(err)
-         });
    };
   
     

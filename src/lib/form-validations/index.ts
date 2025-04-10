@@ -1,13 +1,5 @@
 // const phone_validate = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
 
-export const errorEquivalence = (error:string | null) => {
-  if(error === 'Request failed with status code 400') return 'Por favor, llene bien todos los campos';
-  if(error === 'Request failed with status code 500') return 'Credenciales no validas, intente de nuevo';
-  
-  if(!!error && error !== 'Request failed with status code 400') return error;
-  return '';
-}
-
 export const name_validate = <T extends object>(
   username: string,
   setFireValidate: React.Dispatch<React.SetStateAction<T>>

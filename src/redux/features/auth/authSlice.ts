@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { registerUser, loginUser } from './authThunks';
-import { errorEquivalence } from '../../../lib/form-validations';
+import { errorEquivalence } from '../../api/errorHandlers';
 
 type AuthInitialStateProps = {
   email: string;
@@ -21,7 +21,21 @@ const authInitialState: AuthInitialStateProps = {
 const authSlice = createSlice({
   name: 'auth',
   initialState: authInitialState,
-  reducers: {},
+  reducers: {
+    clearAuthError: (state) => {
+      state.error = null;
+    },
+    setUser: (state, action) => {
+      const { email, username } = action.payload;
+      state.email = email;
+      state.username = username;
+    },
+    clearUser: (state) => {
+      state.email = '';
+      state.username = '';
+      state.password = '';
+    },
+  },
   extraReducers: (builder) => {
     builder
     //Validaciones del registro
@@ -32,11 +46,13 @@ const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
         // guardar datos del usuario registrado:
-        // Object.assign(state, action.payload);
+        Object.assign(state, action.payload);
       })
       .addCase(registerUser.rejected, (state, action) => {
+        const fullError = errorEquivalence(action.payload as object | null);
+
         state.loading = false;
-        state.error = errorEquivalence(action.payload as string);
+        state.error = fullError;
       })
 
     //Validaciones del login
@@ -44,14 +60,18 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
+      .addCase(loginUser.fulfilled, (state,action) => {
         state.loading = false;
+        Object.assign(state, action.payload);
       })
       .addCase(loginUser.rejected, (state, action) => {
+        const fullError = errorEquivalence(action.payload as object | null);
+
         state.loading = false;
-        state.error = errorEquivalence(action.payload as string);
+        state.error = fullError;
       });
   }
 });
 
+export const { clearAuthError, setUser, clearUser } = authSlice.actions;
 export default authSlice.reducer;
