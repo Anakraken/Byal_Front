@@ -15,28 +15,34 @@ import { setUser, clearUser } from './redux/features/auth/authSlice';
 function App() {
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   async function checkLogin() {
     const cookies = Cookies.get();
     if (!cookies.token) {
       dispatch(clearUser());
       setIsLogin(false);
+      setLoading(false);
       return;
     }
-
+  
     try {
       const res = await verifyTokenRequest();
-      dispatch(setUser(res.data)); // guarda usuario globalmente
+      dispatch(setUser(res.data));
       setIsLogin(true);
     } catch (error) {
       dispatch(clearUser());
       setIsLogin(false);
+    } finally {
+      setLoading(false);
     }
   }
-
+  
   useEffect(() => {
     checkLogin();
   }, []);
+
+  if (loading) return <h2>Cargando...</h2>;
 
   return (
     // <BrowserRouter> Activar esto cuando ya vaya a produccion
@@ -49,7 +55,6 @@ function App() {
             isLogin ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />
           }
         />
-        
         
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute />}>
