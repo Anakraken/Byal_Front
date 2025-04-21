@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RegisterPage } from './pages/RegisterPage';
 import { LoginPage } from './pages/LoginPage';
+import { Dashboard } from './pages/Dashboard';
 import { ProtectedRoute } from './components/ProtectedRoutes';
 import Cookies from 'js-cookie';
 import { verifyTokenRequest } from './redux/api/auth';
@@ -38,7 +39,7 @@ function App() {
         
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute />}>
-          <Route path='/dashboard' element={<h1>Dashboard</h1>} />
+          <Route path='/dashboard' element={<Dashboard/>} />
         </Route>
 
         <Route path='*' element={<h1>No encontrado</h1>} />

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { registerUser, loginUser } from './authThunks';
+import { registerUser, loginUser, logoutUser } from './authThunks';
 import { errorEquivalence } from '../../api/errorHandlers';
 
 type AuthInitialStateProps = {
@@ -69,7 +69,16 @@ const authSlice = createSlice({
 
         state.loading = false;
         state.error = fullError;
-      });
+      })
+      
+      //Validaciones para el logout
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.email = '';
+        state.username = '';
+        state.password = '';
+        state.error = null;
+        state.loading = false;
+    });
   }
 });
 
