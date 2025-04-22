@@ -1,18 +1,9 @@
-// configureStore permite dividir el estado en multiples archivos
-// redux/store.ts
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './features/auth/authSlice';
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // usa localStorage
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import { combineReducers } from '@reduxjs/toolkit';
+import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -21,22 +12,17 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth'], // solo persistimos auth
+  whitelist: ['auth'], // qué slices quieres guardar
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+  middleware: [thunk],
 });
 
-export const persistor = persistStore(store);
+export const persistor = persistStore(store); // <- 🔥 Esto es lo que usarás en logout
 
 //Agregan el type al estado global
 export type RootState = ReturnType<typeof store.getState>;
