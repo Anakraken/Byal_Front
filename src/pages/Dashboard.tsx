@@ -2,6 +2,7 @@ import { logoutUser } from '../redux/features/auth/authThunks';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../redux/features/hooks';
 import { AuthLayout } from '../lib/Layouts/AuthLayout';
+import { persistor } from '../redux/store';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -11,7 +12,10 @@ export const Dashboard = () => {
   const handleLogout = () => {
     dispatch(logoutUser())
       .unwrap()
-      .then(() => navigate('/login'))
+      .then(() => {
+        persistor.purge(); // <- esto limpia el storage después del logout
+        navigate('/login')
+      })
       .catch((err) => console.error("Error en logout:", err));
   };
 
