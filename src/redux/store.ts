@@ -3,7 +3,6 @@ import authReducer from './features/auth/authSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from '@reduxjs/toolkit';
-import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -19,8 +18,12 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: [thunk],
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // <- Necesario para redux-persist
+    }),
 });
+
 
 export const persistor = persistStore(store); // <- 🔥 Esto es lo que usarás en logout
 
