@@ -4,10 +4,13 @@ import { colors,device } from "../../../Theme";
 export const NavbarContainer = styled.nav`
   border-right: 2px ridge ${colors.inactive};
   text-align: center;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 
   .menu-icon {
   display: none;
-  } 
+  }
 
   /////Querys
   @media ${device.mobile} {
@@ -71,7 +74,18 @@ export const Mobile = styled.div`
 export const ButtonsContainer = styled.div`
   margin-top: 40px;
   padding-left: 5%;
-  display: grid;
-  grid-template-rows: repeat(1fr);
-  row-gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
+
+export const LogoutContainer = styled.div`
+  width: 100%;
+  border-top: 2px ridge ${colors.inactive};
+
+  img {
+    padding-left: 5px;
+  }
+`;
+
+export const InfoContainer = styled.div``;

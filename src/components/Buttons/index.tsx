@@ -19,8 +19,8 @@ export const Button = ({onClick, disabled, variant, submit, active, linewidth, c
     disabled={disabled}
     className={!!variant && variant === "link" || 'icon' ? 'link': ''}
     type={!!submit ? 'submit' : 'button'}
-    {...props}
     linewidth={linewidth}
+    {...props}
     >
       {
         variant === 'icon' ? 
