@@ -1,7 +1,7 @@
 import { logoutUser } from '../redux/features/auth/authThunks';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../redux/features/hooks';
-import { AuthLayout } from '../lib/Layouts/AuthLayout';
+import { DashboardLayout } from '../lib/Layouts/DashboardLayout';
 import { persistor } from '../redux/store'; // <- Asegúrate de importar esto
 
 export const Dashboard = () => {
@@ -20,13 +20,8 @@ export const Dashboard = () => {
   };
 
   return (
-    <AuthLayout
-      buttonText={loading ? 'Cerrando...' : 'Cerrar sesión'}
-      linkText=''
-      link=''
-      onSubmit={handleLogout}
-    >
+    <DashboardLayout>
       <h1>Dashboard</h1>
-    </AuthLayout>
+    </DashboardLayout>
   );
 };

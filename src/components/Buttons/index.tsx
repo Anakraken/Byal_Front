@@ -1,6 +1,6 @@
-import { CustomButton } from "./ButtonStyles.styles";
+import { CustomButton, IconContainer } from "./ButtonStyles.styles";
 
-type Variants = 'outline' | 'primary' | 'link';
+type Variants = 'icon' | 'primary' | 'link';
 
 type ButtonProps ={
   onClick?: () => void;
@@ -9,20 +9,26 @@ type ButtonProps ={
   children: React.ReactNode;
   submit?: boolean;
   linewidth?: string;
+  active?: boolean;
 }
 
-export const Button = ({onClick, disabled, variant, submit, linewidth, children, ...props}:ButtonProps ) => {
-
+export const Button = ({onClick, disabled, variant, submit, active, linewidth, children, ...props}:ButtonProps ) => {
   return (
     <CustomButton
     onClick={onClick}
     disabled={disabled}
-    className={!!variant && variant === "link" ? 'link': ''}
+    className={!!variant && variant === "link" || 'icon' ? 'link': ''}
     type={!!submit ? 'submit' : 'button'}
     {...props}
     linewidth={linewidth}
     >
-      {children || 'testing buton'}
+      {
+        variant === 'icon' ? 
+        <IconContainer active={!!active ? 'true' : ''}>{children}</IconContainer>
+        :
+        children || 'testing buton'
+      }
+      
     </CustomButton>
   )
 };

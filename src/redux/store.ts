@@ -30,3 +30,8 @@ export const persistor = persistStore(store); // <- 🔥 Esto es lo que usarás 
 //Agregan el type al estado global
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+
+//  El estado de autenticación persista al recargar la página (o al cerrar y volver a abrir).
+
+//  Si cerramos sesión, borramos también ese estado persistido.
