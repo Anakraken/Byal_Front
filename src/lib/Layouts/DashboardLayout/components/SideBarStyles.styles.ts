@@ -27,10 +27,10 @@ export const NavbarContainer = styled.nav`
 `;
 
 type AvatarProps = {
-  status: string;
+  status: string | undefined;
 };
 export const Avatar = styled.div<AvatarProps>`
-  background-color: ${({ status }) => (status || colors.inactive)};
+  background-color: ${({ status }) => (status === 'warning'? colors.warning : status === 'success' ? colors.success : status === 'error' ? colors.error : colors.inactive)};
   display: flex;
   justify-content: center;
   align-items: center;

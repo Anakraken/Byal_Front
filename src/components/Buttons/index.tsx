@@ -1,4 +1,4 @@
-import { CustomButton, IconContainer } from "./ButtonStyles.styles";
+import { CustomButton, IconContainer,PrimaryButton } from "./ButtonStyles.styles";
 
 type Variants = 'icon' | 'primary' | 'link';
 
@@ -13,22 +13,47 @@ type ButtonProps ={
 }
 
 export const Button = ({onClick, disabled, variant, submit, active, linewidth, children, ...props}:ButtonProps ) => {
-  return (
+ 
+  if(variant === 'link') return (
     <CustomButton
     onClick={onClick}
     disabled={disabled}
-    className={!!variant && variant === "link" || 'icon' ? 'link': ''}
+    className={"link"}
+    type={!!submit ? 'submit' : 'button'}
+    linewidth={linewidth}
+    {...props}
+    >
+      {children}
+      
+    </CustomButton>
+  )
+
+  if(variant === 'icon')return (
+    <CustomButton
+    onClick={onClick}
+    disabled={disabled}
+    className={'link'}
     type={!!submit ? 'submit' : 'button'}
     linewidth={linewidth}
     {...props}
     >
       {
-        variant === 'icon' ? 
-        <IconContainer active={!!active ? 'true' : ''}>{children}</IconContainer>
-        :
-        children || 'testing buton'
+        <IconContainer active={!!active ? 'true' : ''}>
+          {children}
+        </IconContainer>
       }
       
     </CustomButton>
+  )
+
+  return(
+    <PrimaryButton
+    onClick={onClick}
+    disabled={disabled}
+    type={!!submit ? 'submit' : 'button'}
+    {...props}
+    >
+      {children}
+    </PrimaryButton>
   )
 };

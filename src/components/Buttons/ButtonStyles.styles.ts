@@ -9,14 +9,6 @@ export const PrimaryButton = styled.button`
   font-size: 16px;
   font-weight: 400;
   cursor: pointer;
-  /* padding: 0 10px; */
-`;
-
-type CustomButtonProps = {
-  linewidth?: string;
-};
-export const CustomButton = styled(PrimaryButton)<CustomButtonProps>`
-  //-PRIMARY-//
   color: white;
   background-color: ${colors.primary};
   transition: background-color 0.5s;
@@ -24,7 +16,12 @@ export const CustomButton = styled(PrimaryButton)<CustomButtonProps>`
   &:hover{
     background-color: ${colors.primaryOver};
   }
-  
+`;
+
+type CustomButtonProps = {
+  linewidth?: string;
+};
+export const CustomButton = styled(PrimaryButton)<CustomButtonProps>`
   //-LINK-//
   &.link{
     background: transparent;
