@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../lib/Theme";
+import { colors, device } from "../../lib/Theme";
 
 export const PrimaryButton = styled.button`
   width: 100%;
@@ -56,6 +56,7 @@ export const CustomButton = styled(PrimaryButton)<CustomButtonProps>`
 
 type IconContainerProps = {
   active?: string;
+  center?: string;
 }
 
 export const IconContainer = styled.div<IconContainerProps>`
@@ -81,4 +82,17 @@ export const IconContainer = styled.div<IconContainerProps>`
       font-size: 1rem;
       padding-top: 3px;
     } 
+
+    &.center{
+      grid-template-columns: 100%;
+      column-gap: 0px;
+      justify-items: center;
+      text-align: center;
+      padding-left: 0px;
+
+      img {
+        height: 25px;
+        width: 25px;
+      }
+    }
 `;

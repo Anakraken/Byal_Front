@@ -1,40 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
 
-export const useResponsive = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
-  const [isPortrait, setIsPortrait] = useState(false);
-  const [isLandscape, setIsLandscape] = useState(false);
+const getIsMobilePortrait = () => {
+  const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+  return window.innerWidth <= 767 && isPortrait;
+};
+
+export function useResponsive() {
+  const [isMobilePortrait, setIsMobilePortrait] = useState(getIsMobilePortrait());
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const checkScreen = () => {
-      const width = window.innerWidth;
-      setIsMobile(width <= 767);
-      setIsTablet(width > 767 && width <= 1024);
-      setIsDesktop(width > 1024);
-      setIsPortrait(window.matchMedia('(orientation: portrait)').matches);
-      setIsLandscape(window.matchMedia('(orientation: landscape)').matches);
+    const handleResize = () => {
+      setIsMobilePortrait(getIsMobilePortrait());
     };
 
-    checkScreen(); // Run on mount
-
-    window.addEventListener('resize', checkScreen);
-    window.addEventListener('orientationchange', checkScreen);
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
 
     return () => {
-      window.removeEventListener('resize', checkScreen);
-      window.removeEventListener('orientationchange', checkScreen);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
     };
   }, []);
 
-  return {
-    isMobile,
-    isTablet,
-    isDesktop,
-    isPortrait,
-    isLandscape,
-  };
-};
+  return { isMobilePortrait };
+}

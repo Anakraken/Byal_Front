@@ -10,9 +10,10 @@ type ButtonProps ={
   submit?: boolean;
   linewidth?: string;
   active?: boolean;
+  center?: boolean;
 }
 
-export const Button = ({onClick, disabled, variant, submit, active, linewidth, children, ...props}:ButtonProps ) => {
+export const Button = ({onClick, center,disabled, variant, submit, active, linewidth, children, ...props}:ButtonProps ) => {
  
   if(variant === 'link') return (
     <CustomButton
@@ -38,7 +39,7 @@ export const Button = ({onClick, disabled, variant, submit, active, linewidth, c
     {...props}
     >
       {
-        <IconContainer active={!!active ? 'true' : ''}>
+        <IconContainer active={!!active ? 'true' : ''} className={!!center ? "center" : ''}>
           {children}
         </IconContainer>
       }

@@ -1,43 +1,96 @@
-import styled from "styled-components";
-import { device } from "../../Theme";
-import { SideBar } from "./components/SideBar";
+import { useResponsive } from "../../hooks/useResponsive";
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { persistor } from "../../../redux/store";
+import { useAppDispatch, useAppSelector } from '../../../redux/features/hooks';
+import { logoutUser } from '../../../redux/features/auth/authThunks';
+import { LandscapeOpenView } from "./Desktop/OpenView";
+import { LandscapeCloseView } from "./Desktop/CloseView";
+import { PortraitView } from "./Mobile/PortraitView";
 
 type AuthLayoutProps = {
   children: React.ReactNode;
 };
 
-const DashboardContainer = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: grid;
-  grid-template-areas: "nav main";  
-  grid-template-columns: 20% 80%;
+export const DashboardLayout = ({ children }: AuthLayoutProps) => {
+  const status = 'error';
+  const rol = 'Dispatcher';
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const navigate = useNavigate();
+  const [selectedPath, setSelectedPath] = useState({
+    asignacion_unidades: false,
+    registro: false,
+    pre_asignacion: false,
+    reporte: false,
+    drivers: false
+  });
 
-  .main {
-    grid-area: main;
-  }
-  .nav {
-    grid-area: nav;
-  }
+  useEffect(() => {
+    if (currentPath === '/dashboard') {
+      setSelectedPath(prev => ({ ...prev, asignacion_unidades: true }));
+    }
+  }, [currentPath]);
 
-  /////Querys
-  @media ${device.mobile} {
-    grid-template-areas: 
-    "main" 
-    "nav";
-    grid-template-rows: 1fr 60px;
-    grid-template-columns: 100%;
-  } 
-`;
+  const handleNavigate = (linkPage: string) => {
+    navigate(linkPage);
+  };
 
-export const DashboardLayout = ({children}:AuthLayoutProps) => {
-  
-  return (
-    <DashboardContainer>
-      <SideBar />
-      <main className="main">
-        {children}
-      </main>
-    </DashboardContainer>
-  )
+  const dispatch = useAppDispatch();
+  const { loading, username } = useAppSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logoutUser())
+      .unwrap()
+      .then(() => {
+        persistor.purge();
+        navigate('/login');
+      })
+      .catch((err) => console.error("Error en logout:", err));
+  };
+
+  const [openMenu, setOpenMenu] = useState(true);
+  const { isMobilePortrait } = useResponsive();
+
+  const mobile = (
+    <PortraitView
+    status={status}
+    username={username}
+    rol={rol}
+    selectedPath={selectedPath}
+    handleLogout={handleLogout}
+    handleNavigate={handleNavigate}
+    loading={loading}
+    >
+      {children}
+    </PortraitView>
+  );
+
+  const desktop = (!!openMenu ? 
+  <LandscapeOpenView
+  status={status}
+  username={username}
+  rol={rol}
+  selectedPath={selectedPath}
+  handleLogout={handleLogout}
+  handleNavigate={handleNavigate}
+  loading={loading}
+  onClick={()=>setOpenMenu(false)}
+  >
+      {children}
+  </LandscapeOpenView>
+  : 
+  <LandscapeCloseView
+  status={status}
+  selectedPath={selectedPath}
+  handleLogout={handleLogout}
+  handleNavigate={handleNavigate}
+  onClick={()=>setOpenMenu(true)}
+  >
+      {children}
+  </LandscapeCloseView>
+  );
+
+  return <>{isMobilePortrait ? mobile : desktop}</>;
 };
