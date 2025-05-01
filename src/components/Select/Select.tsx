@@ -1,13 +1,26 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { SelectContainer } from "./SelectStyles.styles";
 
 type SelectProps = {
   options: string[];
   label?: string;
-  onSelect: (value: string) => void; 
+  onSelect: (value: string) => void;
+  error?: boolean;
+  message?: string;
+  name: string;
 };
 
-export const Select = ({ options, label, onSelect }: SelectProps) => {
-  const [selected, setSelected] = useState<string>("");
+export const Select = ({
+  options,
+  label,
+  onSelect,
+  error,
+  message,
+  name,
+}: SelectProps) => {
+  const [selected, setSelected] = useState("");
+
+  const formattedName = name.replace(/\s+/g, "_").toLowerCase();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -16,21 +29,32 @@ export const Select = ({ options, label, onSelect }: SelectProps) => {
   };
 
   return (
-    <div className="w-full">
-      {label && <label>{label}</label>}
-      <select
-        value={selected}
-        onChange={handleChange}
-      >
-        <option value="" disabled>
-          Select an option
-        </option>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
+    <SelectContainer error={error?.toString()}>
+      <div className="select">
+        <select
+          id={formattedName}
+          name={name}
+          value={selected}
+          onChange={handleChange}
+          className="select_input"
+        >
+          <option value="" disabled hidden>
+            {label}
           </option>
-        ))}
-      </select>
-    </div>
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+
+        <label htmlFor={formattedName} className="select_label">
+          {label}
+        </label>
+        <span className="select_arrow" />
+      </div>
+
+      {!!error && <p className="error">{message}</p>}
+    </SelectContainer>
   );
 };
