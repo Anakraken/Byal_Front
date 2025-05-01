@@ -47,7 +47,7 @@ export const RegisterPage = () => {
     dispatch(registerUser(dataInput))
       .unwrap() //permite usar then y catch
       .then(() => {
-        navigate('/dashboard')
+        navigate('/asignacion-unidades')
       })
 };
 

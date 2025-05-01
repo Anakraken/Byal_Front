@@ -41,7 +41,7 @@ export const LoginPage = () => {
        dispatch(loginUser(dataInput))
          .unwrap() //permite usar then y catch
          .then(() => {
-           navigate('/dashboard')
+           navigate('/asignacion-unidades')
          })
    };
   

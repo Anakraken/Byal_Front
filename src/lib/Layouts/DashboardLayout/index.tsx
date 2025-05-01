@@ -28,7 +28,7 @@ export const DashboardLayout = ({ children }: AuthLayoutProps) => {
   });
 
   useEffect(() => {
-    if (currentPath === '/dashboard') {
+    if (currentPath === '/asignacion-unidades') {
       setSelectedPath(prev => ({ ...prev, asignacion_unidades: true }));
     }
   }, [currentPath]);

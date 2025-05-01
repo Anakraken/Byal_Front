@@ -5,9 +5,9 @@ import {
   UserName, 
   UserRol,
   ButtonsContainer,
-  LogoutContainer,
   InfoContainer,
-  DashboardContainerMobile
+  DashboardContainerMobile,
+  FullAvatar
 } from './PortraitStyles.styles';
 import { Button } from '../../../../components/Buttons';
 import UserIcon from '../../../icons/user.png';
@@ -17,6 +17,8 @@ import PreAsigIcon from '../../../icons/asig-unidades.svg';
 import ReporteIcon from '../../../icons/reporte.svg';
 import DriversIcon from '../../../icons/drivers.svg';
 import { MenuProps } from '../../../types/dashboardTypes';
+import { useState } from 'react';
+import { Modal } from '../../../../components/Modals';
 
 export const PortraitView = ({
   status,
@@ -28,6 +30,9 @@ export const PortraitView = ({
   loading,
   children
 }:MenuProps) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const toggle = () => setIsModalVisible(!isModalVisible);
+
   return(
     <DashboardContainerMobile>
       <main className="main">{children}</main>
@@ -36,7 +41,7 @@ export const PortraitView = ({
           <Button 
           variant='icon' 
           active={selectedPath.asignacion_unidades}
-          onClick={()=>handleNavigate('/dashboard')}
+          onClick={()=>handleNavigate('/asignacion-unidades')}
           center={true}
           >
             <img src={HomeIcon} alt='Asignacion-unidades' />
@@ -78,25 +83,28 @@ export const PortraitView = ({
             <img src={DriversIcon} alt='Drivers' />
           </Button>
 
-          <Avatar status={status}>
+          <Avatar status={status} onClick={toggle}>
             <img src={UserIcon} alt='Hamburger-Menu'/>
           </Avatar>
         </ButtonsContainer>
 
-      {/* <LogoutContainer> */}
-        {/* <Button 
-            variant='icon' 
-            onClick={handleLogout}
-            >
-              <img src={LogoutIcon} alt='Drivers' />
-              <span>{!!loading ? 'Cerrando' : "Salir"}</span>
-          </Button> */}
-      {/* </LogoutContainer> */}
-      {/* <InfoContainer> */}
-        {/* <Title>BYAL</Title>  */}
-          {/* <UserName>{username}</UserName>
-          <UserRol>{rol}</UserRol> */}
-      {/* </InfoContainer> */}
+        <Modal 
+        onBackClick={toggle}
+        isVisible={isModalVisible}
+        >
+          <InfoContainer>
+          <Title>BYAL</Title> 
+            <FullAvatar status={status} onClick={toggle}>
+              <img src={UserIcon} alt='Hamburger-Menu'/>
+            </FullAvatar>
+            <UserName>{username}</UserName>
+            <UserRol>{rol}</UserRol>
+          </InfoContainer>
+          <Button onClick={handleLogout}>
+              <span>{!!loading ? 'Cerrando sesión' : "Cerrar sesión"}</span>
+          </Button>
+        </Modal>
+
     </NavbarContainer>
     </DashboardContainerMobile>
   )

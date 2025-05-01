@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { RegisterPage } from './pages/RegisterPage';
 import { LoginPage } from './pages/LoginPage';
-import { Dashboard } from './pages/Dashboard';
+import { AsigUnidades } from './pages/Asig-Unidades';
 import { ProtectedRoute } from './components/ProtectedRoutes';
 import Cookies from 'js-cookie';
 import { verifyTokenRequest } from './redux/api/auth';
@@ -52,13 +52,13 @@ function App() {
         <Route path='/register' element={<RegisterPage />} />
         <Route path="/"
           element={
-            isLogin ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />
+            isLogin ? <Navigate to="/asignacion-unidades" replace /> : <Navigate to="/login" replace />
           }
         />
         
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute />}>
-          <Route path='/dashboard' element={<Dashboard/>} />
+          <Route path='/asignacion-unidades' element={<AsigUnidades/>} />
         </Route>
 
         <Route path='*' element={<h1>No encontrado</h1>} />

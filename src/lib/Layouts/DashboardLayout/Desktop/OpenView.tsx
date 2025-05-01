@@ -52,7 +52,7 @@ return(
       <Button 
       variant='icon' 
       active={selectedPath.asignacion_unidades}
-      onClick={()=>handleNavigate('/dashboard')}
+      onClick={()=>handleNavigate('/asignacion-unidades')}
       >
         <img src={HomeIcon} alt='Asignacion-unidades' />
         <span>Asignacion de unidades</span>

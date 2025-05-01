@@ -59,15 +59,14 @@ export const Avatar = styled.div<AvatarProps>`
   }
 `;
 
-///No usados aun
-export const InfoContainer = styled.div``;
+///Estilos dentro del modal
+export const InfoContainer = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+`;
 export const Title = styled.h1`
   color: ${colors.primary};
-  margin-top: 30px;
-
-  @media ${device.tablet} {
-    font-size: 20px;
-  }
 `;
 export const UserName = styled.p`
   color: ${colors.border};
@@ -75,25 +74,24 @@ export const UserName = styled.p`
 `;
 export const UserRol = styled.p`
   color: ${colors.primary};
-  margin-top: 10px;
+  margin-top: 20px;
+  margin-bottom: 45px;
   font-weight: 600;
 `;
-export const LogoutContainer = styled.div`
-  width: 100%;
-  border-top: 2px ridge ${colors.inactive};
+export const FullAvatar = styled.div<AvatarProps>`
+  background-color: ${({ status }) => (status === 'warning'? colors.warning : status === 'success' ? colors.success : status === 'error' ? colors.error : colors.inactive)};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
 
   img {
-    padding-left: 5px;
-  }
-
-  @media ${device.tablet} {
-    padding-top: 10px;
-    padding-bottom: 30px;
-  }
-
-  @media ${device.mobile} {
-    border-top: 0;
-    width: fit-content;
-    padding: 0 10px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
   }
 `;
