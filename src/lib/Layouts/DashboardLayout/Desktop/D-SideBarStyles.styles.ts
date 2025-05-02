@@ -4,8 +4,7 @@ import { colors,device } from "../../../Theme";
 export const NavbarContainer = styled.nav`
   border-right: 2px ridge ${colors.inactive};
   text-align: center;
-  height: 100vh;
-  overflow: hidden; 
+  height: 100%;
   display: grid;
   grid-template-rows: 55px auto 1fr auto;
 `;
@@ -146,16 +145,23 @@ export const LogoutContainerClose = styled.div`
 export const InfoContainer = styled.div``; 
 
 export const DashboardContainer = styled.div`
-width: 100vw;
-height: 100vh;
-display: grid;
-grid-template-areas: "nav main";  
-grid-template-columns: auto 1fr;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-areas: "nav main";  
+  grid-template-columns: auto 1fr;
 
-.main {
-  grid-area: main;
-}
-.nav {
-  grid-area: nav;
-}
+  .nav {
+    grid-area: nav;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+
+  .main {
+    grid-area: main;
+    height: 100vh;
+    overflow-y: auto;
+  }
 `;
