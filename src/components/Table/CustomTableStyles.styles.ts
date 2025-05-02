@@ -23,6 +23,7 @@ export const Rows = styled.td`
 
 export const TableContainer = styled.div`
   width: 100%;
+  height: 100%;
   border: 1px solid ${colors.inactive};
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;

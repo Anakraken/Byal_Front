@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors,device } from "../../../Theme";
+import { colors } from "../../../Theme";
 
 export const DashboardContainerMobile = styled.div`
   width: 100vw;

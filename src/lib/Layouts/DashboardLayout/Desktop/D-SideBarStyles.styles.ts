@@ -4,7 +4,8 @@ import { colors,device } from "../../../Theme";
 export const NavbarContainer = styled.nav`
   border-right: 2px ridge ${colors.inactive};
   text-align: center;
-  height: 100%;
+  height: 100vh;
+  overflow: hidden; 
   display: grid;
   grid-template-rows: 55px auto 1fr auto;
 `;

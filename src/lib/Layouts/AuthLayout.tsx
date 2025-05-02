@@ -55,14 +55,14 @@ export const AuthLayout = ({buttonText, link, onSubmit, linkText, children}:Auth
           {buttonText}
         </Button>
 
-        <br/><br/>
+        {/* <br/><br/>
         <Button 
          variant="link" 
          onClick={handleLink}
          linewidth='100px'
          >
           <a>{linkText}</a>
-        </Button>
+        </Button> */}
       </form>
     </AuthContainer>
   )
