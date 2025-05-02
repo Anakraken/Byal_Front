@@ -94,7 +94,7 @@ export const PortraitView = ({
         >
           <InfoContainer>
           <Title>BYAL</Title> 
-            <FullAvatar status={status} onClick={toggle}>
+            <FullAvatar status={status}>
               <img src={UserIcon} alt='Hamburger-Menu'/>
             </FullAvatar>
             <UserName>{username}</UserName>

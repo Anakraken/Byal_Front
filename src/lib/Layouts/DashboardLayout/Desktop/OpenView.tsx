@@ -82,7 +82,7 @@ return(
       onClick={()=>handleNavigate('/reporte-cierre')}
       >
         <img src={ReporteIcon} alt='Reporte-cierre' />
-        <span>Reporte/Cierre</span>
+        <span>Reporte-Cierre</span>
       </Button>
       
       <Button 

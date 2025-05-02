@@ -1,6 +1,6 @@
 import { 
   NavbarContainer,
-  ButtonsContainer,
+  ButtonsContainerClose,
   InfoContainer,
   OpenButton,
   AvatarClose,
@@ -40,7 +40,7 @@ return (
       </AvatarClose>
   </InfoContainer>
     
-    <ButtonsContainer>
+    <ButtonsContainerClose>
       <Button 
       variant='icon' 
       active={selectedPath.asignacion_unidades}
@@ -85,7 +85,7 @@ return (
       >
         <img src={DriversIcon} alt='Drivers' />
       </Button>
-    </ButtonsContainer>
+    </ButtonsContainerClose>
 
   <LogoutContainerClose>
     <Button 

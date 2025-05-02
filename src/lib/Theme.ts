@@ -3,6 +3,7 @@ export const colors = {
   primaryOver: '#343270',
   shadow: '#3432c768',
   inactive: '#E5E4F8',
+  softblue: 'rgba(52, 50, 199, 0.22)',
   border: '#323232',
   error: '#D30000',
   success: '#46CB18',

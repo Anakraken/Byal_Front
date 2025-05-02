@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { DashboardLayout } from '../lib/Layouts/DashboardLayout';
 import { Select } from '../components/Select/Select';
+import { CustomTable } from '../components/Table/CustomTable';
 
 export const AsigUnidades = () => {
   const [selectedValue, setSelectedValue] = useState("");
@@ -11,10 +12,40 @@ export const AsigUnidades = () => {
     setSelectedValue(value);
   };
 
+  const sampleData = [
+    {
+      Unidad: 'BLL002',
+      Placas: 'YR1151D',
+      NIV: 'JHHYEP0H0FK001405',
+      Status: 'Activo',
+      TipoVehiculo: 'Large Van Peugeot Manager Furgon',
+      Driver: 'Celia Georgina González Escalante',
+      Operacion: 'DMY4'
+    },
+    {
+      Unidad: 'BLL002',
+      Placas: 'YR1151D',
+      NIV: 'JHHYEP0H0FK001405',
+      Status: 'Inactivo',
+      TipoVehiculo: 'Large Van Peugeot Manager Furgon',
+      Driver: 'Celia Georgina González Escalante',
+      Operacion: 'DMY4'
+    },
+    {
+      Unidad: 'BLL002',
+      Placas: 'YR1151D',
+      NIV: 'JHHYEP0H0FK001405',
+      Status: 'Activo',
+      TipoVehiculo: 'Large Van Peugeot Manager Furgon',
+      Driver: 'Celia Georgina González Escalante',
+      Operacion: 'DMY4'
+    },
+  ];
+
   return (
     <DashboardLayout>
       <div className='center'>
-      <Select
+      {/* <Select
         label="Selecciona una opción"
         options={opciones}
         onSelect={handleSelect}
@@ -26,7 +57,10 @@ export const AsigUnidades = () => {
       <br />
       <p style={{ marginTop: "20px" }}>
         Valor seleccionado: <strong>{selectedValue}</strong>
-      </p>
+      </p> */}
+      <div style={{ width: "800px"}}>
+        <CustomTable data={sampleData} />
+      </div>
       </div>
     </DashboardLayout>
   );

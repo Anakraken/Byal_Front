@@ -45,7 +45,7 @@ export const CustomButton = styled(PrimaryButton)<CustomButtonProps>`
    }
   &.link:hover{
     cursor: pointer;
-    background-color:rgba(52, 50, 199, 0.22);
+    background-color:${colors.softblue};
     border-radius: 6px;
     
     a::after {
@@ -62,7 +62,7 @@ type IconContainerProps = {
 export const IconContainer = styled.div<IconContainerProps>`
     width: 100%;
     height: 100%;
-    background: ${({ active }) => (!!active && active === 'true' ? 'rgba(52, 50, 199, 0.22)' : "transparent")};
+    background: ${({ active }) => (!!active && active === 'true' ? colors.softblue : "transparent")};
     box-shadow: 0 0 0 0;
     color: ${colors.border};
     border-radius: 6px;

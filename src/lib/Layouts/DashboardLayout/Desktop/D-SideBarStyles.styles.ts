@@ -109,6 +109,15 @@ export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5%;
+  min-width: 135px;
+  width: 100%;
+`;
+export const ButtonsContainerClose = styled.div`
+  margin-top: 40px;
+  padding-left: 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 5%;
 
   @media ${device.tablet} {
     padding-left: 0%;
