@@ -9,9 +9,11 @@ export const DashboardContainerMobile = styled.div`
     "main"
     "nav";
   grid-template-rows: 1fr 60px;
+  overflow-y: auto;
 
   .main {
     grid-area: main;
+    padding-bottom: 50px;
   }
   .nav {
     grid-area: nav;
@@ -19,9 +21,13 @@ export const DashboardContainerMobile = styled.div`
 `;
 
 export const NavbarContainer = styled.nav`
+position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
   display: grid;
   border-top: 2px ridge ${colors.inactive};
-  height: 100%;
   width: 100vw;
   grid-template-rows: 100%;
   grid-template-columns: 100%;
@@ -29,6 +35,7 @@ export const NavbarContainer = styled.nav`
   justify-content: space-between;
   gap: 20px;
   padding: 5px;
+  background-color: white;
 `;
 
 export const ButtonsContainer = styled.div`

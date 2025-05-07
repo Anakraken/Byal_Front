@@ -6,6 +6,7 @@ export const Overlay = styled.div`
   background-color: ${colors.shadow};
 
   position: fixed;
+  z-index: 100;
   height: 100%;
   width: 100%;
   top: 0;
