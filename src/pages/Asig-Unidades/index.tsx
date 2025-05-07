@@ -113,7 +113,7 @@ export const AsigUnidades = () => {
           </div>
         </Column2>
         <Column3 className='row3'>
-        <CustomTable data={sampleData} />
+        <CustomTable data={sampleData} isExported={true} />
         </Column3>
       </AsignUnidContainer>
     </DashboardLayout>

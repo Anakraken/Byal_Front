@@ -7,6 +7,8 @@ import {
   Rows,
   TableContainer,
   TableRow,
+  ExportedButtonCaontainer,
+  ExportedButton
 } from "./CustomTableStyles.styles";
 import { Button } from "../Buttons";
 import { Modal } from "../Modals";
@@ -23,10 +25,10 @@ type DataRow = {
 
 type Props = {
   data: DataRow[];
+  isExported?: boolean;
 };
 
-export const CustomTable = ({ data }: Props) => {
-  const isExported = false;
+export const CustomTable = ({ data, isExported }: Props) => {
   const titles = data.map((row) => Object.keys(row));
 
   const exportToExcel = async () => {
@@ -96,7 +98,8 @@ export const CustomTable = ({ data }: Props) => {
   };
 
   return (
-    <TableContainer>
+    <>
+    <TableContainer totalheight={isExported  === true ? "true" : "false"}>
       <Table>
         <thead>
           <tr>
@@ -126,9 +129,6 @@ export const CustomTable = ({ data }: Props) => {
             </TableRow>
           ))}
         </tbody>
-        {!!isExported && (
-          <Button onClick={exportToExcel}>Exportar a Excel</Button>
-        )}
       </Table>
 
       {/* 👇 Aquí se renderiza el modal */}
@@ -138,5 +138,13 @@ export const CustomTable = ({ data }: Props) => {
         </Modal>
       )}
     </TableContainer>
+    {!!isExported && (
+          <ExportedButtonCaontainer>
+            <ExportedButton>
+              <Button onClick={exportToExcel}>Exportar a Excel</Button>
+            </ExportedButton>
+          </ExportedButtonCaontainer>
+      )}
+    </>
   );
 };
