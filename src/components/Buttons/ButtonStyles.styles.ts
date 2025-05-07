@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, device } from "../../lib/Theme";
+import { colors} from "../../lib/Theme";
 
 export const PrimaryButton = styled.button`
   width: 100%;

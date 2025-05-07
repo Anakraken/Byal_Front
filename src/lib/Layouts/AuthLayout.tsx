@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 type AuthLayoutProps = {
   children: React.ReactNode;
   buttonText: string;
-  linkText: string;
+  linkText?: string;
   link?: string;
   onSubmit?: () => void;
 };
@@ -55,14 +55,18 @@ export const AuthLayout = ({buttonText, link, onSubmit, linkText, children}:Auth
           {buttonText}
         </Button>
 
-        {/* <br/><br/>
+      {!!linkText &&
+      <>
+      <br/><br/>
         <Button 
          variant="link" 
          onClick={handleLink}
          linewidth='100px'
          >
           <a>{linkText}</a>
-        </Button> */}
+        </Button>
+      </>
+      }
       </form>
     </AuthContainer>
   )

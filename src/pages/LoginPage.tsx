@@ -49,8 +49,8 @@ export const LoginPage = () => {
   return (
     <AuthLayout
     buttonText={loading ? 'Accesando...' : 'Iniciar sesión'}
-    linkText='Registrarse'
-    link='/register'
+    // linkText='Registrarse'
+    // link='/register'
     onSubmit={handleSubmit}
     >
       <Input 
