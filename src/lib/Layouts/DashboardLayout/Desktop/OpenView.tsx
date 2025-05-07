@@ -16,7 +16,7 @@ import HomeIcon from '../../../icons/home.svg';
 import RegisterIcon from '../../../icons/registros.svg';
 import PreAsigIcon from '../../../icons/asig-unidades.svg';
 import ReporteIcon from '../../../icons/reporte.svg';
-import DriversIcon from '../../../icons/drivers.svg';
+import DNRIcon from '../../../icons/drivers.svg';
 import LogoutIcon from '../../../icons/logout.svg';
 import Arrow from '../../../icons/left-arrow.svg';
 import { MenuProps } from '../../../types/dashboardTypes';
@@ -87,11 +87,11 @@ return(
       
       <Button 
       variant='icon' 
-      active={selectedPath.drivers}
-      onClick={()=>handleNavigate('/drivers')}
+      active={selectedPath.dnr}
+      onClick={()=>handleNavigate('/dnr')}
       >
-        <img src={DriversIcon} alt='Drivers' />
-        <span>Drivers</span>
+        <img src={DNRIcon} alt='DNR' />
+        <span>DNR</span>
       </Button>
     </ButtonsContainer>
 
@@ -100,7 +100,7 @@ return(
         variant='icon' 
         onClick={handleLogout}
         >
-          <img src={LogoutIcon} alt='Drivers' />
+          <img src={LogoutIcon} alt='logout' />
           <span>{!!loading ? 'Cerrando sesión' : "Cerrar sesión"}</span>
       </Button>
   </LogoutContainer>

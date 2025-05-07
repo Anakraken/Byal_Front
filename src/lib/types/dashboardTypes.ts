@@ -3,7 +3,7 @@ export type SelectedPadProps = {
     registro: boolean;
     pre_asignacion: boolean;
     reporte: boolean;
-    drivers: boolean
+    dnr: boolean
 }
 export type MenuProps = {
   status: string | undefined;

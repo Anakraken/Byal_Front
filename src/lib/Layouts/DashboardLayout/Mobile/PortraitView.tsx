@@ -15,7 +15,7 @@ import HomeIcon from '../../../icons/home.svg';
 import RegisterIcon from '../../../icons/registros.svg';
 import PreAsigIcon from '../../../icons/asig-unidades.svg';
 import ReporteIcon from '../../../icons/reporte.svg';
-import DriversIcon from '../../../icons/drivers.svg';
+import DNRIcon from '../../../icons/drivers.svg';
 import { MenuProps } from '../../../types/dashboardTypes';
 import { useState } from 'react';
 import { Modal } from '../../../../components/Modals';
@@ -76,11 +76,11 @@ export const PortraitView = ({
           
           <Button 
           variant='icon' 
-          active={selectedPath.drivers}
-          onClick={()=>handleNavigate('/drivers')}
+          active={selectedPath.dnr}
+          onClick={()=>handleNavigate('/dnr')}
           center={true}
           >
-            <img src={DriversIcon} alt='Drivers' />
+            <img src={DNRIcon} alt='DNR' />
           </Button>
 
           <Avatar status={status} onClick={toggle}>

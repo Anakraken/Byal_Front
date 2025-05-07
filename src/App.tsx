@@ -6,6 +6,10 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { RegisterPage } from './pages/RegisterPage';
 import { LoginPage } from './pages/LoginPage';
 import { AsigUnidades } from './pages/Asig-Unidades';
+import { Registros } from './pages/Registro';
+import { PreAsig } from './pages/Pre-Asignacion';
+import { Reporte } from './pages/Reporte';
+import { DNR } from './pages/DNR';
 import { ProtectedRoute } from './components/ProtectedRoutes';
 import Cookies from 'js-cookie';
 import { verifyTokenRequest } from './redux/api/auth';
@@ -49,7 +53,7 @@ function App() {
     <HashRouter>
       <Routes>
         <Route path='/login' element={<LoginPage />} />
-        <Route path='/register' element={<RegisterPage />} />
+        {/* <Route path='/register' element={<RegisterPage />} /> */}
         <Route path="/"
           element={
             isLogin ? <Navigate to="/asignacion-unidades" replace /> : <Navigate to="/login" replace />
@@ -59,6 +63,10 @@ function App() {
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute />}>
           <Route path='/asignacion-unidades' element={<AsigUnidades/>} />
+          <Route path='/registro' element={<Registros/>} />
+          <Route path='/pre-asignacion' element={<PreAsig/>} />
+          <Route path='/reporte-cierre' element={<Reporte/>} />
+          <Route path='/dnr' element={<DNR/>} />
         </Route>
 
         <Route path='*' element={<h1>No encontrado</h1>} />

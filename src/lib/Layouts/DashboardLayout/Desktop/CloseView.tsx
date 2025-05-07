@@ -14,7 +14,7 @@ import HomeIcon from '../../../icons/home.svg';
 import RegisterIcon from '../../../icons/registros.svg';
 import PreAsigIcon from '../../../icons/asig-unidades.svg';
 import ReporteIcon from '../../../icons/reporte.svg';
-import DriversIcon from '../../../icons/drivers.svg';
+import DNRIcon from '../../../icons/drivers.svg';
 import LogoutIcon from '../../../icons/logout.svg';
 import Arrow from '../../../icons/left-arrow.svg';
 import { MenuProps } from '../../../types/dashboardTypes';
@@ -79,11 +79,11 @@ return (
       
       <Button 
       variant='icon' 
-      active={selectedPath.drivers}
-      onClick={()=>handleNavigate('/drivers')}
+      active={selectedPath.dnr}
+      onClick={()=>handleNavigate('/dnr')}
       center={true}
       >
-        <img src={DriversIcon} alt='Drivers' />
+        <img src={DNRIcon} alt='Dnr' />
       </Button>
     </ButtonsContainerClose>
 
@@ -93,7 +93,7 @@ return (
         onClick={handleLogout}
         center={true}
         >
-          <img src={LogoutIcon} alt='Drivers' />
+          <img src={LogoutIcon} alt='logout' />
       </Button>
   </LogoutContainerClose>
   </NavbarContainer>
