@@ -5,6 +5,8 @@ export type LoginFormDataProps = {
 
 export type RegisterFormDataProps = LoginFormDataProps & {
   username: string;
+  rol: string; 
+  avatar: string;
 };
 
 type LoginValidationProps = {
@@ -19,12 +21,14 @@ type RegisterValidationProps =  LoginValidationProps &{
 export const RegisterForm: RegisterFormDataProps = {
   email: '',
   username: '',
-  password: ''
+  password: '',
+  rol: '',
+  avatar: ''
 }
 export const ValidateRegisterForm: RegisterValidationProps = {
   username: false,
   email: false,
-  password: false
+  password: false,
 }
 
 export const LoginForm: LoginFormDataProps = {

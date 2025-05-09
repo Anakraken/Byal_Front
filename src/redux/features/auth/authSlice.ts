@@ -6,6 +6,8 @@ type AuthInitialStateProps = {
   email: string;
   username?: string;
   password: string;
+  avatar?: string;
+  rol?: string;
   loading: boolean;
   error: string | null;
 };
@@ -14,6 +16,8 @@ const authInitialState: AuthInitialStateProps = {
   email: '',
   username: '',
   password: '',
+  avatar: '',
+  rol: '',
   loading: false,
   error: null,
 };
@@ -26,9 +30,11 @@ const authSlice = createSlice({
       state.error = null;
     },
     setUser: (state, action) => {
-      const { email, username } = action.payload;
+      const { email, username, rol, avatar } = action.payload;
       state.email = email;
       state.username = username;
+      state.rol = rol;
+      state.avatar = avatar;
     },
     clearUser: (state) => {
       state.email = '';
@@ -76,6 +82,8 @@ const authSlice = createSlice({
         state.email = '';
         state.username = '';
         state.password = '';
+        state.rol = '';
+        state.avatar = '';
         state.error = null;
         state.loading = false;
     });

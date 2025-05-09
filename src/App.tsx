@@ -53,7 +53,7 @@ function App() {
     <HashRouter>
       <Routes>
         <Route path='/login' element={<LoginPage />} />
-        {/* <Route path='/register' element={<RegisterPage />} /> */}
+        <Route path='/register' element={<RegisterPage />} />
         <Route path="/"
           element={
             isLogin ? <Navigate to="/asignacion-unidades" replace /> : <Navigate to="/login" replace />

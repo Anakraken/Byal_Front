@@ -44,7 +44,7 @@ export const RegisterPage = () => {
   }, [dataInput.username, dataInput.email, dataInput.password]);
 
   const handleSubmit = () => {
-    dispatch(registerUser(dataInput))
+    dispatch(registerUser({...dataInput, rol: 'Dispatcher', avatar: 'test'}))
       .unwrap() //permite usar then y catch
       .then(() => {
         navigate('/asignacion-unidades')

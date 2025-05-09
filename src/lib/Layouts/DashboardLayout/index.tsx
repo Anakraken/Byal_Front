@@ -15,7 +15,6 @@ type AuthLayoutProps = {
 
 export const DashboardLayout = ({ children }: AuthLayoutProps) => {
   const status = 'error';
-  const rol = 'Dispatcher';
   const location = useLocation();
   const currentPath = location.pathname;
   const navigate = useNavigate();
@@ -24,7 +23,7 @@ export const DashboardLayout = ({ children }: AuthLayoutProps) => {
     registro: false,
     pre_asignacion: false,
     reporte: false,
-    drivers: false
+    dnr: false
   });
 
   useEffect(() => {
@@ -38,7 +37,7 @@ export const DashboardLayout = ({ children }: AuthLayoutProps) => {
   };
 
   const dispatch = useAppDispatch();
-  const { loading, username } = useAppSelector((state) => state.auth);
+  const { loading, username, rol } = useAppSelector((state) => state.auth);
 
   const handleLogout = () => {
     dispatch(logoutUser())
