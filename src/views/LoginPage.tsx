@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input } from "../components/Inputs";
+import { Input } from '../components/Inputs';
 import { AuthLayout } from '../lib/Layouts/AuthLayout';
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from '../redux/features/hooks';
@@ -24,7 +24,7 @@ export const LoginPage = () => {
   }
 
    //Submit Logic
-     const { loading, error } = useAppSelector(state => state.auth);
+   const { loading, error, rol, isAuthenticated } = useAppSelector(state => state.auth);
      const [serverMessage, setServerMessage] = useState<string | null>('');
      const [fireValidate, setFireValidate] = useState(ValidateLoginForm);
      
@@ -37,20 +37,27 @@ export const LoginPage = () => {
        password_validate(dataInput.password, setFireValidate);
      }, [dataInput.email, dataInput.password]);
    
-     const handleSubmit = () => {
-       dispatch(loginUser(dataInput))
-         .unwrap() //permite usar then y catch
-         .then(() => {
-           navigate('/asignacion-unidades')
-         })
-   };
+     useEffect(() => {
+      if (isAuthenticated && rol) {
+        switch (rol) {
+          case 'Dispatcher': navigate('/asignacion-unidades'); break;
+          case 'Admin': navigate('/administracion'); break;
+          case 'Driver': navigate('/driver'); break;
+          default: navigate('/login');
+        }
+      }
+    }, [isAuthenticated, rol]);
+
+    const handleSubmit = () => {
+      dispatch(loginUser(dataInput))
+        .unwrap()
+        .catch((err) => console.log("Error en login:", err));
+    };
   
-    
+
   return (
     <AuthLayout
     buttonText={loading ? 'Accesando...' : 'Iniciar sesión'}
-    // linkText='Registrarse'
-    // link='/register'
     onSubmit={handleSubmit}
     >
       <Input 

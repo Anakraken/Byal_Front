@@ -7,9 +7,10 @@ type AuthInitialStateProps = {
   username?: string;
   password: string;
   avatar?: string;
-  rol?: string;
+  rol: string | null;
   loading: boolean;
   error: string | null;
+  isAuthenticated: boolean;
 };
 
 const authInitialState: AuthInitialStateProps = {
@@ -17,9 +18,10 @@ const authInitialState: AuthInitialStateProps = {
   username: '',
   password: '',
   avatar: '',
-  rol: '',
+  rol: null,
   loading: false,
   error: null,
+  isAuthenticated: false,
 };
 
 const authSlice = createSlice({
@@ -35,11 +37,16 @@ const authSlice = createSlice({
       state.username = username;
       state.rol = rol;
       state.avatar = avatar;
+      state.rol = action.payload.rol;
+      state.isAuthenticated = true;
     },
     clearUser: (state) => {
       state.email = '';
       state.username = '';
       state.password = '';
+      state.rol = null;
+      state.isAuthenticated = false;
+      state.avatar = '';
     },
   },
   extraReducers: (builder) => {
@@ -66,10 +73,11 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(loginUser.fulfilled, (state,action) => {
+      .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        Object.assign(state, action.payload);
-      })
+        const { email, username, rol, avatar } = action.payload.data;
+        authSlice.caseReducers.setUser(state, { payload: { email, username, rol, avatar }, type: 'auth/setUser' });
+      })      
       .addCase(loginUser.rejected, (state, action) => {
         const fullError = errorEquivalence(action.payload as object | null);
 

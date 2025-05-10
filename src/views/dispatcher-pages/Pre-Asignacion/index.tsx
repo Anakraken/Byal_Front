@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { DashboardLayout } from '../../lib/Layouts/DashboardLayout';
-import { Select } from '../../components/Select/Select';
-import { CustomTable } from '../../components/Table/CustomTable';
-import { Input } from '../../components/Inputs';
-import { Button } from '../../components/Buttons';
+import { DashboardLayout } from '../../../lib/Layouts/DashboardLayout';
+import { Select } from '../../../components/Select/Select';
+import { CustomTable } from '../../../components/Table/CustomTable';
+import { Input } from '../../../components/Inputs';
+import { Button } from '../../../components/Buttons';
 import { AsignUnidContainer,Column1,Column2,Column3 } from './asig-unidadesStyles.styles';
 
 export const PreAsig = () => {

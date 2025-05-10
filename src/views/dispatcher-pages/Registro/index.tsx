@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DashboardLayout } from '../../lib/Layouts/DashboardLayout';
+import { DashboardLayout } from '../../../lib/Layouts/DashboardLayout';
 
 
 export const Registros = () => {

@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { DashboardLayout } from '../../lib/Layouts/DashboardLayout';
-import { Select } from '../../components/Select/Select';
-import { CustomTable } from '../../components/Table/CustomTable';
-import { Input } from '../../components/Inputs';
-import { Button } from '../../components/Buttons';
+import { DashboardLayout } from '../../../lib/Layouts/DashboardLayout';
+import { Select } from '../../../components/Select/Select';
+import { CustomTable } from '../../../components/Table/CustomTable';
+import { Input } from '../../../components/Inputs';
+import { Button } from '../../../components/Buttons';
 import { AsignUnidContainer,Column1,Column2,Column3 } from './asig-unidadesStyles.styles';
 
-export const DNR = () => {
+export const AsigUnidades = () => {
   const [selectedValue, setSelectedValue] = useState("");
   const [dataInput, setDataInput] = useState({test1:'', test2:''}); 
 
@@ -61,7 +61,7 @@ export const DNR = () => {
   return (
     <DashboardLayout>
       <AsignUnidContainer>
-      <div className='title'><h1>DNR</h1></div>
+      <div className='title'><h1>Asignación de Unidades</h1></div>
         <Column1 className='row1'>
         <Select
         label="Selecciona una opción"

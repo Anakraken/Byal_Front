@@ -44,7 +44,7 @@ export const RegisterPage = () => {
   }, [dataInput.username, dataInput.email, dataInput.password]);
 
   const handleSubmit = () => {
-    dispatch(registerUser({...dataInput, rol: 'Dispatcher', avatar: 'test'}))
+    dispatch(registerUser({...dataInput, avatar: 'test'}))
       .unwrap() //permite usar then y catch
       .then(() => {
         navigate('/asignacion-unidades')
@@ -85,6 +85,13 @@ export const RegisterPage = () => {
       error={fireValidate.password}
       message={'La contraseña debe tener minimo 6 caracteres'}
       /> 
+      <Input 
+      type="text"
+      label='Rol'
+      name='rol'
+      value={dataInput.rol}
+      onChange={handleInput}
+      />
       {!!serverMessage && serverMessage !== '' && <p className='error'>{serverMessage}</p>}
     </AuthLayout> 
   )

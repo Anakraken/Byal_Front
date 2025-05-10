@@ -8,7 +8,7 @@ export type SelectedPadProps = {
 export type MenuProps = {
   status: string | undefined;
   username?: string | undefined;
-  rol?: string | undefined;
+  rol?: string | null;
   selectedPath: SelectedPadProps;
   handleLogout: () => void;
   handleNavigate: (linkPage: string) => void;
