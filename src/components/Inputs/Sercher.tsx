@@ -69,9 +69,12 @@ export const SearchInput = <T extends string | number>({
     setSearchTerm(value.toString());
   }, [value]);
 
-  const filteredOptions = options.filter(option =>
-    option.toString().toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredOptions =
+    searchTerm.trim() === ''
+      ? options
+      : options.filter(option =>
+          option.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        );
 
   return (
     <SelectContainer
@@ -93,7 +96,9 @@ export const SearchInput = <T extends string | number>({
         onKeyDown={handleKeyDown}
         autoComplete="off"
         onFocus={() => {
-          setShowOptions(true);
+          if (options.length > 0) {
+            setShowOptions(true);
+          }
         }}
       />
 

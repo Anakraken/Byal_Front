@@ -51,10 +51,10 @@ export const AsigUnidades = () => {
   };
 
   //Limpia los serchers cuando no hay texto en el input
-  useEffect(()=>{
-    if(dataInput.Driver === "") setDriversInfo([]);
-    if(dataInput.Unidad === "") setUnidadesInfo([]);
-  },[dataInput.Driver, dataInput.Unidad]);
+  // useEffect(()=>{
+  //   if(dataInput.Driver === "") setDriversInfo([]);
+  //   if(dataInput.Unidad === "") setUnidadesInfo([]);
+  // },[dataInput.Driver, dataInput.Unidad]);
 
   
   const handleAsignar = () => {
