@@ -113,7 +113,14 @@ export const Reporte = () => {
           </div>
         </Column2>
         <Column3 className='row3'>
-        <CustomTable data={sampleData} isExported={true} />
+        <CustomTable 
+        data={sampleData} 
+        isExported={true} 
+        inactiveKey={"Status"}
+        inactiveValue={"Inactivo"}
+        >
+          TESTEANDO
+        </CustomTable>
         </Column3>
       </AsignUnidContainer>
     </DashboardLayout>

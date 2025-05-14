@@ -11,18 +11,29 @@ import {
   ExportedButton
 } from "./CustomTableStyles.styles";
 import { Button } from "../Buttons";
-import { Modal } from "../Modals";
 
 type Props<T extends Record<string, any>> = {
   data: T[];
   header?: string[];
   isExported?: boolean;
+  inactiveKey?: string;
+  inactiveValue?: string;
+  isEditable?: boolean;
+  setSelected?: React.Dispatch<React.SetStateAction<T>>;
+  setIsModalVisible?: React.Dispatch<React.SetStateAction<boolean>>;
+  children?: React.ReactNode;
 };
 
 export const CustomTable = <T extends Record<string, any>>({
   data,
   isExported,
-  header
+  header,
+  inactiveKey,
+  inactiveValue,
+  isEditable,
+  setSelected,
+  setIsModalVisible,
+  children
 }: Props<T>) => {
   const titles: string[] =
     header && header.length > 0
@@ -60,9 +71,8 @@ export const CustomTable = <T extends Record<string, any>>({
     data.forEach((row) => {
       const newRow = worksheet.addRow(titles.map((key) => row[key]));
       if (
-        typeof row.Status === "string" &&
-        (row.Status.toLowerCase() === "inactive" ||
-          row.Status.toLowerCase() === "inactivo")
+        typeof row[`${inactiveKey}`] === "string" &&
+        (row[`${inactiveKey}`]=== inactiveValue)
       ) {
         newRow.eachCell((cell) => {
           cell.fill = {
@@ -87,23 +97,20 @@ export const CustomTable = <T extends Record<string, any>>({
   };
 
   // Modal
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedRow, setSelectedRow] = useState<T | null>(null);
 
   const handleRowClick = (row: T) => {
-    if (
-      typeof row.Status === "string" &&
-      (row.Status.toLowerCase() === "inactivo" ||
-        row.Status.toLowerCase() === "inactive")
-    ) {
+    if(row[`${inactiveKey}`] === inactiveValue){
       setSelectedRow(row);
-      setIsModalVisible(true);
+      !!setIsModalVisible && setIsModalVisible(true);
+      !!setSelected && setSelected(row);
     }
-  };
 
-  const closeModal = () => {
-    setIsModalVisible(false);
-    setSelectedRow(null);
+    if(!!isEditable){
+      setSelectedRow(row);
+      !!setIsModalVisible && setIsModalVisible(true);
+      !!setSelected && setSelected(row);
+    }
   };
 
   return (
@@ -121,16 +128,9 @@ export const CustomTable = <T extends Record<string, any>>({
             {data.map((row, i) => (
               <TableRow
                 key={i}
-                status={row.Status}
+                status={row[`${inactiveKey}`]}
                 onClick={() => handleRowClick(row)}
-                style={{
-                  cursor:
-                    typeof row.Status === "string" &&
-                    (row.Status.toLowerCase() === "inactive" ||
-                      row.Status.toLowerCase() === "inactivo")
-                      ? "pointer"
-                      : "default",
-                }}
+                isEditable={isEditable? 'true' : 'false'}
               >
                 {titles.map((key, index) => (
                   <Rows key={index}>{row[key]}</Rows>
@@ -141,11 +141,7 @@ export const CustomTable = <T extends Record<string, any>>({
         </Table>
 
         {selectedRow && (
-          <Modal isVisible={isModalVisible} onBackClick={closeModal}>
-            <div>
-              La unidad <strong>{selectedRow["Unidad"]}</strong> está inactiva.
-            </div>
-          </Modal>
+          <>{children}</>
         )}
       </TableContainer>
 
@@ -159,3 +155,30 @@ export const CustomTable = <T extends Record<string, any>>({
     </>
   );
 };
+
+
+// Ejemplo de uso 
+// const [isModalVisible, setIsModalVisible] = useState(false);
+
+// const closeModal = () => {
+//   setIsModalVisible(false);
+// };
+
+// const onButtonClick = () => {
+//   closeModal();
+// }
+{/* <CustomTable 
+data={asigUnidData} 
+header={headerTitles} 
+inactiveKey={"Estatus vehículo"}
+inactiveValue={"Inactivo"}
+isEditable={true}
+setSelected={setSelectedRow}
+setIsModalVisible={setIsModalVisible}
+>
+    <Modal isVisible={isModalVisible} onBackClick={closeModal}>
+        <p>Driver: {selectedRow.Driver}</p>
+        <p>Driver: {selectedRow.Unidad}</p>
+      <Button onClick={onButtonClick}>Liberar Driver</Button>
+    </Modal>
+</CustomTable> */}

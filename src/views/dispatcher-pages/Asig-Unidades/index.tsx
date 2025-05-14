@@ -9,8 +9,10 @@ import { transportistas } from '../../../lib/dommy-data/transportistas';
 import { SearchInput } from '../../../components/Inputs/Sercher';
 import { TransportistaProps, UnidadesMidProps, sanitizeUnidadesMid, AsigUnidadesProps } from '../../../lib/types/dispatcherTypes';
 import { filterData,handleInput } from '../../../lib/functions/input-functions';
+import { Modal } from '../../../components/Modals';
 
 export const AsigUnidades = () => {
+  //Table
   const headerTitles = ["Driver","Unidad","Placa","NIV","Estatus vehículo","Tipo vehículo","Operacion","Estacion","Grupo"]
 
   // Selects
@@ -101,7 +103,25 @@ export const AsigUnidades = () => {
     setAsigUnidData(prev => [...prev, newEntry]);
   };  
   
+  const [selectedRow, setSelectedRow] = useState<Record<string,any>>({});
 
+  useEffect(()=>{
+    console.log("Table",asigUnidData);
+  },[asigUnidData])
+
+  const handleLiberar = () => {
+    setAsigUnidData(prev => prev.filter(entry => entry.Driver !== selectedDriver));
+    setSelectedDriver('');
+  };
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
+
+  const onButtonClick = () => {
+    closeModal();
+  }
   return (
     <DashboardLayout>
       <AsignUnidContainer>
@@ -158,7 +178,21 @@ export const AsigUnidades = () => {
         </div>
         </Column2>
         <Column3 className='row3'>
-        <CustomTable data={asigUnidData} header={headerTitles}/>
+        <CustomTable 
+        data={asigUnidData} 
+        header={headerTitles} 
+        inactiveKey={"Estatus vehículo"}
+        inactiveValue={"Inactivo"}
+        isEditable={true}
+        setSelected={setSelectedRow}
+        setIsModalVisible={setIsModalVisible}
+        >
+            <Modal isVisible={isModalVisible} onBackClick={closeModal}>
+               <p>Driver: {selectedRow.Driver}</p>
+               <p>Driver: {selectedRow.Unidad}</p>
+             <Button onClick={onButtonClick}>Liberar Driver</Button>
+           </Modal>
+        </CustomTable>
         </Column3>
       </AsignUnidContainer>
     </DashboardLayout>

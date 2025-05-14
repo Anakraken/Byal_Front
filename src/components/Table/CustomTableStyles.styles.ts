@@ -15,9 +15,8 @@ export const Header = styled.th`
 
 export const Rows = styled.td`
   border-top: 2px solid #ccc;
-  padding: 8px;
   text-align: center;
-  height: 50px;
+  height: 85px;
   padding: 0 20px;
 `;
 
@@ -35,10 +34,11 @@ export const TableContainer = styled.div<TableConProp>`
 
 interface RowProps {
   status: string;
+  isEditable?: string
 }
 
 export const TableRow = styled.tr<RowProps>`
-  cursor: ${({ status }) => status === "Inactivo" ? 'pointer' : "default"};
+  cursor: ${({ status, isEditable }) => (status === "Inactivo" || isEditable === "true") ? 'pointer' : "default"};
   background-color: ${({ status }) => status === "Inactivo" ? colors.softblue : "white"};
 
   &:hover {
