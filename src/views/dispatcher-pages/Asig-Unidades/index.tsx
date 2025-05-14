@@ -12,14 +12,6 @@ import { filterData,handleInput } from '../../../lib/functions/input-functions';
 import { Modal } from '../../../components/Modals';
 
 export const AsigUnidades = () => {
-  // Selects
-  const [selectedValue, setSelectedValue] = useState("");
-  const opciones = ["Opción 1", "Opción 2", "Opción 3"];
-
-  const handleSelect = (value: string) => {
-    setSelectedValue(value);
-  };
-
   //Data from input
   const [dataInput, setDataInput] = useState({Driver:'', Unidad:''});
   const [fireValidations, setfireValidation] = useState({Driver:false, Unidad:false})
@@ -118,10 +110,6 @@ export const AsigUnidades = () => {
   const [selectedRow, setSelectedRow] = useState<Record<string,any>>({});
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  useEffect(()=>{
-    console.log("Table",asigUnidData);
-  },[asigUnidData])
-
   const closeModal = () => {
     setIsModalVisible(false);
   };
@@ -132,34 +120,59 @@ export const AsigUnidades = () => {
     closeModal();
   }
 
+  // Selects
+  const [selectedValue, setSelectedValue] = useState("");
+  const opcionesEstatus = Array.from(
+    new Set(
+      UnidadesMid.map(item =>
+        item["Estatus vehículo"].trim().toLowerCase()
+      )
+    )
+  ).map(status => status.charAt(0).toUpperCase() + status.slice(1));
+  
+  const opcionesTipo = Array.from(
+    new Set(
+      UnidadesMid.map(item =>
+        item["Tipo vehículo"].trim().toLowerCase()
+      )
+    )
+  ).map(status => status.charAt(0).toUpperCase() + status.slice(1));
+
+  const opcionesOperacion = Array.from(
+    new Set(
+      transportistas.map(item =>
+        item.Operacion.toString().trim().toLowerCase()
+      )
+    )
+  ).map(status => status.charAt(0).toUpperCase() + status.slice(1));
+  
+  const handleSelect = (value: string) => {
+    // setSelectedValue(value);
+    console.log(value)
+  };
+
   return (
     <DashboardLayout>
       <AsignUnidContainer>
       <div className='title'><h1>Asignación de Unidades</h1></div>
         <Column1 className='row1'>
         <Select
-        label="Selecciona una opción"
-        options={opciones}
+        label="Estatus vehículo"
+        options={opcionesEstatus}
         onSelect={handleSelect}
-        name="mi_select"
-        error={selectedValue === ""}
-        message="Este campo es requerido"
+        name="estatus"
         />
         <Select
-        label="Selecciona una opción"
-        options={opciones}
+        label="Tipo vehículo"
+        options={opcionesTipo}
         onSelect={handleSelect}
-        name="mi_select"
-        error={selectedValue === ""}
-        message="Este campo es requerido"
+        name="tipo"
         />
         <Select
-        label="Selecciona una opción"
-        options={opciones}
+        label="Operacion"
+        options={opcionesOperacion}
         onSelect={handleSelect}
-        name="mi_select"
-        error={selectedValue === ""}
-        message="Este campo es requerido"
+        name="operacion"
         />
         </Column1>
 
