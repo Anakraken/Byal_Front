@@ -133,3 +133,45 @@ export const InputPasswordContainer = styled(InputContainer)`
     margin-bottom: 3px;
   }
 `;
+
+///Estilos del sercher
+type SelectContainerProps = {
+  border: string;
+};
+export const SelectContainer = styled.div<SelectContainerProps>`
+position: relative;
+width: 100%;
+
+.suggestion_list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: ${({ border }) => (!!border && border === 'true' ? "1px solid #ccc" : "none")};  
+  border-radius: 0.4rem;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+`;
+
+type ItemListProps = {
+  highlight: string;
+  isdisabled?: string;
+};
+
+export const ItemList = styled.li<ItemListProps>`
+  cursor: ${({ isdisabled }) => (isdisabled === 'true' ? 'not-allowed' : 'pointer')};
+  padding: 4px 8px;
+  background-color: ${({ highlight, isdisabled }) =>
+    isdisabled === 'true' ? '#eee': highlight === 'true'? colors.shadow: 'white'};
+  color: ${({ isdisabled }) => (isdisabled === 'true' ? '#999' : 'black')};
+
+  &:hover {
+    background-color: ${({ isdisabled }) => (isdisabled === 'true' ? '#eee' : colors.shadow)};
+  }
+`;

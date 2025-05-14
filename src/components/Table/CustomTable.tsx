@@ -13,23 +13,23 @@ import {
 import { Button } from "../Buttons";
 import { Modal } from "../Modals";
 
-type DataRow = {
-  Unidad: string;
-  Placas: string;
-  NIV: string;
-  Status: string;
-  TipoVehiculo: string;
-  Driver: string;
-  Operacion: string;
-};
-
-type Props = {
-  data: DataRow[];
+type Props<T extends Record<string, any>> = {
+  data: T[];
+  header?: string[];
   isExported?: boolean;
 };
 
-export const CustomTable = ({ data, isExported }: Props) => {
-  const titles = data.map((row) => Object.keys(row));
+export const CustomTable = <T extends Record<string, any>>({
+  data,
+  isExported,
+  header
+}: Props<T>) => {
+  const titles: string[] =
+    header && header.length > 0
+      ? header
+      : data.length > 0
+      ? Object.keys(data[0])
+      : [];
 
   const exportToExcel = async () => {
     const workbook = new ExcelJS.Workbook();
@@ -40,7 +40,7 @@ export const CustomTable = ({ data, isExported }: Props) => {
     worksheet.getCell("A1").font = { size: 16, bold: true };
     worksheet.getCell("A1").alignment = { horizontal: "center" };
 
-    worksheet.addRow(titles[0]);
+    worksheet.addRow(titles);
     const headerRow = worksheet.getRow(2);
     headerRow.eachCell((cell) => {
       cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
@@ -58,8 +58,12 @@ export const CustomTable = ({ data, isExported }: Props) => {
     });
 
     data.forEach((row) => {
-      const newRow = worksheet.addRow(Object.values(row));
-      if (row.Status.toLowerCase() === "inactive") {
+      const newRow = worksheet.addRow(titles.map((key) => row[key]));
+      if (
+        typeof row.Status === "string" &&
+        (row.Status.toLowerCase() === "inactive" ||
+          row.Status.toLowerCase() === "inactivo")
+      ) {
         newRow.eachCell((cell) => {
           cell.fill = {
             type: "pattern",
@@ -76,17 +80,22 @@ export const CustomTable = ({ data, isExported }: Props) => {
 
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      type:
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     saveAs(blob, "reporte.xlsx");
   };
 
-  // 👇 Manejo del modal
+  // Modal
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedRow, setSelectedRow] = useState<DataRow | null>(null);
+  const [selectedRow, setSelectedRow] = useState<T | null>(null);
 
-  const handleRowClick = (row: DataRow) => {
-    if (row.Status.toLowerCase() === "inactivo" || row.Status.toLowerCase() === "inactive") {
+  const handleRowClick = (row: T) => {
+    if (
+      typeof row.Status === "string" &&
+      (row.Status.toLowerCase() === "inactivo" ||
+        row.Status.toLowerCase() === "inactive")
+    ) {
       setSelectedRow(row);
       setIsModalVisible(true);
     }
@@ -99,51 +108,53 @@ export const CustomTable = ({ data, isExported }: Props) => {
 
   return (
     <>
-    <TableContainer totalheight={isExported  === true ? "true" : "false"}>
-      <Table>
-        <thead>
-          <tr>
-            {titles[0].map((title, i) => (
-              <Header key={i}>{title}</Header>
-            ))}
-          </tr>
-        </thead>
-
-        <tbody>
-          {data.map((row, i) => (
-            <TableRow
-              key={i}
-              status={row.Status}
-              onClick={() => handleRowClick(row)}
-              style={{
-                cursor:
-                  row.Status.toLowerCase() === "inactive" ||
-                  row.Status.toLowerCase() === "inactivo"
-                    ? "pointer"
-                    : "default",
-              }}
-            >
-              {Object.values(row).map((item, index) => (
-                <Rows key={index}>{item}</Rows>
+      <TableContainer totalheight={isExported ? "true" : "false"}>
+        <Table>
+          <thead>
+            <tr>
+              {titles.map((title, i) => (
+                <Header key={i}>{title}</Header>
               ))}
-            </TableRow>
-          ))}
-        </tbody>
-      </Table>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((row, i) => (
+              <TableRow
+                key={i}
+                status={row.Status}
+                onClick={() => handleRowClick(row)}
+                style={{
+                  cursor:
+                    typeof row.Status === "string" &&
+                    (row.Status.toLowerCase() === "inactive" ||
+                      row.Status.toLowerCase() === "inactivo")
+                      ? "pointer"
+                      : "default",
+                }}
+              >
+                {titles.map((key, index) => (
+                  <Rows key={index}>{row[key]}</Rows>
+                ))}
+              </TableRow>
+            ))}
+          </tbody>
+        </Table>
 
-      {/* 👇 Aquí se renderiza el modal */}
-      {selectedRow && (
-        <Modal isVisible={isModalVisible} onBackClick={closeModal}>
-          <div>La unidad <strong>{selectedRow.Unidad}</strong> está inactiva.</div>
-        </Modal>
-      )}
-    </TableContainer>
-    {!!isExported && (
-          <ExportedButtonCaontainer>
-            <ExportedButton>
-              <Button onClick={exportToExcel}>Exportar a Excel</Button>
-            </ExportedButton>
-          </ExportedButtonCaontainer>
+        {selectedRow && (
+          <Modal isVisible={isModalVisible} onBackClick={closeModal}>
+            <div>
+              La unidad <strong>{selectedRow["Unidad"]}</strong> está inactiva.
+            </div>
+          </Modal>
+        )}
+      </TableContainer>
+
+      {!!isExported && (
+        <ExportedButtonCaontainer>
+          <ExportedButton>
+            <Button onClick={exportToExcel}>Exportar a Excel</Button>
+          </ExportedButton>
+        </ExportedButtonCaontainer>
       )}
     </>
   );

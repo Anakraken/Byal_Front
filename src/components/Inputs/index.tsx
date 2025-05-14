@@ -4,7 +4,7 @@ import { CheckBox } from "./CheckBox";
 
 type InputTypes = 'text' | 'password' | 'email' | 'tel';
 
-type InputProps = {
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   type?: InputTypes;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string | number;
@@ -22,6 +22,7 @@ export const Input = ({
   message, 
   error,
   label,
+  ...props
 }:InputProps) => {
   const formattedName = name.replace(/\s+/g, "_").toLowerCase();
   const [inputType, setInputType] = useState('password');
@@ -71,6 +72,7 @@ export const Input = ({
       placeholder={label?.toString()}
       onChange={onChange}
       className='input_text'
+      {...props}
       />
       <label
       htmlFor={formattedName}

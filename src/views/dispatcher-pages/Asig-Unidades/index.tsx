@@ -1,62 +1,106 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DashboardLayout } from '../../../lib/Layouts/DashboardLayout';
 import { Select } from '../../../components/Select/Select';
 import { CustomTable } from '../../../components/Table/CustomTable';
-import { Input } from '../../../components/Inputs';
 import { Button } from '../../../components/Buttons';
 import { AsignUnidContainer,Column1,Column2,Column3 } from './asig-unidadesStyles.styles';
+import { UnidadesMid } from '../../../lib/dommy-data/unidades_mid';
+import { transportistas } from '../../../lib/dommy-data/transportistas';
+import { SearchInput } from '../../../components/Inputs/Sercher';
+import { TransportistaProps, UnidadesMidProps, sanitizeUnidadesMid, AsigUnidadesProps } from '../../../lib/types/dispatcherTypes';
+import { filterData,handleInput } from '../../../lib/functions/input-functions';
 
 export const AsigUnidades = () => {
+  const headerTitles = ["Driver","Unidad","Placa","NIV","Estatus vehículo","Tipo vehículo","Operacion","Estacion","Grupo"]
+
+  // Selects
   const [selectedValue, setSelectedValue] = useState("");
-  const [dataInput, setDataInput] = useState({test1:'', test2:''}); 
-
-  const fireValidate = {
-    test1:true, 
-    test2:false
-  }
-
   const opciones = ["Opción 1", "Opción 2", "Opción 3"];
 
   const handleSelect = (value: string) => {
     setSelectedValue(value);
   };
 
-  const sampleData = [
-    {
-      Unidad: 'BLL002',
-      Placas: 'YR1151D',
-      NIV: 'JHHYEP0H0FK001405',
-      Status: 'Activo',
-      TipoVehiculo: 'Large Van Peugeot Manager Furgon',
-      Driver: 'Celia Georgina González Escalante',
-      Operacion: 'DMY4'
-    },
-    {
-      Unidad: 'BLL002',
-      Placas: 'YR1151D',
-      NIV: 'JHHYEP0H0FK001405',
-      Status: 'Inactivo',
-      TipoVehiculo: 'Large Van Peugeot Manager Furgon',
-      Driver: 'Celia Georgina González Escalante',
-      Operacion: 'DMY4'
-    },
-    {
-      Unidad: 'BLL002',
-      Placas: 'YR1151D',
-      NIV: 'JHHYEP0H0FK001405',
-      Status: 'Activo',
-      TipoVehiculo: 'Large Van Peugeot Manager Furgon',
-      Driver: 'Celia Georgina González Escalante',
-      Operacion: 'DMY4'
-    },
-  ];
+  //Data from input
+  const [dataInput, setDataInput] = useState({Driver:'', Unidad:''});
+  //Data new object
+  const initialState: AsigUnidadesProps[] = [];
+  const [asigUnidData, setAsigUnidData] = useState(initialState);
 
-  const handleInput = (e:React.ChangeEvent<HTMLInputElement>) => {
-    setDataInput({
-      ...dataInput,
-      [e.target.name]:e.target.value
-    })
+  //Sercher drivers
+  const [driversInfo, setDriversInfo] = useState<TransportistaProps[]>([]);
+  const [selectedDriver, setSelectedDriver] = useState('');
+
+  const onDriverchange = (e:React.ChangeEvent<HTMLInputElement>) => { 
+      const searchTerm = e.target.value.trim().toLowerCase();
+      const filtered = filterData(transportistas, "Driver", searchTerm);
+      handleInput(e, setDataInput, dataInput);
+      setDriversInfo(filtered);
   }
+
+  //Sercher unidades:
+  const [unidadesInfo, setUnidadesInfo] = useState<UnidadesMidProps[]>([]);
+  const [selectedUnidad, setSelectedUnidad] = useState('');
+
+  const onUnidadeschange = (e:React.ChangeEvent<HTMLInputElement>) => { 
+      const searchTerm = e.target.value.toLowerCase();
+      const filtered = filterData(UnidadesMid, "Unidad", searchTerm);
+      handleInput(e, setDataInput, dataInput);
+      const datosLimpios = sanitizeUnidadesMid(filtered);
+      setUnidadesInfo(datosLimpios);
+  };
+
+  //Limpia los serchers cuando no hay texto en el input
+  useEffect(()=>{
+    if(dataInput.Driver === "") setDriversInfo([]);
+    if(dataInput.Unidad === "") setUnidadesInfo([]);
+  },[dataInput.Driver, dataInput.Unidad]);
+
+  
+  const handleAsignar = () => {
+    const driverData = filterData(transportistas, "Driver", selectedDriver);
+    const unidadData = filterData(UnidadesMid, "Unidad", selectedUnidad);
+
+    // Limpia los inputs y selects un watcher para esto
+    setDataInput({ Driver: '', Unidad: '' });
+    setSelectedDriver('');
+    setSelectedUnidad('');
+    setDriversInfo([]);
+    setUnidadesInfo([]);
+  
+    if (!driverData.length || !unidadData.length) return;
+  
+    const newEntry: AsigUnidadesProps = {
+      Driver: driverData[0].Driver,
+      Unidad: unidadData[0].Unidad,
+      Placa: unidadData[0].Placa,
+      NIV: unidadData[0].NIV,
+      "Estatus vehículo": unidadData[0]['Estatus vehículo'],
+      "Tipo vehículo": unidadData[0]['Tipo vehículo'],
+      Operacion: driverData[0].Operacion,
+      Estacion: driverData[0].Estacion,
+      Grupo: unidadData[0].Grupo
+    };
+  
+    // Verifica que no haya campos vacíos
+    const hasEmptyFields = Object.values(newEntry).some(value => value === "");
+    if (hasEmptyFields) return;
+  
+    // 🔍 Validación para evitar asignar misma unidad al mismo driver
+    const isDuplicate = asigUnidData.some(
+      entry =>
+        entry.Driver.trim().toLowerCase() === newEntry.Driver.trim().toLowerCase() &&
+        entry.Unidad.trim().toLowerCase() === newEntry.Unidad.trim().toLowerCase()
+    );
+  
+    if (isDuplicate) {
+      alert("Este conductor ya tiene asignada esta unidad.");
+      return;
+    }
+
+    setAsigUnidData(prev => [...prev, newEntry]);
+  };  
+  
 
   return (
     <DashboardLayout>
@@ -90,30 +134,31 @@ export const AsigUnidades = () => {
         </Column1>
 
         <Column2 className='row2'>
-        <Input 
-        type="text"
-        label='Correo'
-        name='test1'
-        value={dataInput.test1}
-        onChange={handleInput}
-        error={fireValidate.test1}
-        message={'Correo no válido, intenta de nuevo'}
+
+        <SearchInput
+          label="Driver"
+          name="Driver"
+          options={driversInfo.map(item => item.Driver.trim())}
+          value={dataInput.Driver}
+          onChange={onDriverchange}
+          setSelected={setSelectedDriver}
+          disabledOptions={asigUnidData.map(item => item.Driver.trim())}
         />
-        <Input 
-          type="text"
-          label='Correo'
-          name='test2'
-          value={dataInput.test2}
-          onChange={handleInput}
-          error={fireValidate.test2}
-          message={'Correo no válido, intenta de nuevo'}
+        <SearchInput
+        label='Unidades'
+        name='Unidad'
+        value={dataInput.Unidad}
+        onChange={onUnidadeschange}
+        setSelected={setSelectedUnidad}
+        options={unidadesInfo.map(item => item.Unidad.trim())}
+        disabledOptions={asigUnidData.map(item => item.Unidad.trim())}
         />
-          <div className='center'>
-          <Button>Prueba</Button>
-          </div>
+        <div className='center'>
+        <Button onClick={handleAsignar}>Asignar</Button>
+        </div>
         </Column2>
         <Column3 className='row3'>
-        <CustomTable data={sampleData} isExported={true} />
+        <CustomTable data={asigUnidData} header={headerTitles}/>
         </Column3>
       </AsignUnidContainer>
     </DashboardLayout>
