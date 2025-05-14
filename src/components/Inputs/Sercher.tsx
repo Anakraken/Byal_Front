@@ -10,6 +10,8 @@ type SearcherProps<T extends string | number> = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setSelected: React.Dispatch<React.SetStateAction<T>>;
   disabledOptions?: T[];
+  message?: string;
+  error?: boolean;
 };
 
 export const SearchInput = <T extends string | number>({
@@ -19,6 +21,8 @@ export const SearchInput = <T extends string | number>({
   value,
   onChange,
   setSelected,
+  message, 
+  error,
   disabledOptions,
 }: SearcherProps<T>) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -86,6 +90,8 @@ export const SearchInput = <T extends string | number>({
         label={label}
         name={name}
         value={searchTerm}
+        message={message}
+        error={error}
         onChange={(e) => {
           const val = e.target.value;
           setSearchTerm(val);

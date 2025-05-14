@@ -22,6 +22,7 @@ export const AsigUnidades = () => {
 
   //Data from input
   const [dataInput, setDataInput] = useState({Driver:'', Unidad:''});
+  const [fireValidations, setfireValidation] = useState({Driver:false, Unidad:false})
   
   //New object (Este se va a enviar a la base de datos)
   const [asigUnidData, setAsigUnidData] = useState<AsigUnidadesProps[]>([]);
@@ -49,78 +50,88 @@ export const AsigUnidades = () => {
       setUnidadesInfo(datosLimpios);
   };
 
-  //Limpia los serchers cuando no hay texto en el input
-  // useEffect(()=>{
-  //   if(dataInput.Driver === "") setDriversInfo([]);
-  //   if(dataInput.Unidad === "") setUnidadesInfo([]);
-  // },[dataInput.Driver, dataInput.Unidad]);
+  // Limpia los serchers cuando no hay texto en el input
+  useEffect(()=>{
+    if(dataInput.Driver === "") setDriversInfo([]);
+    if(dataInput.Unidad === "") setUnidadesInfo([]);
+  },[dataInput.Driver, dataInput.Unidad]);
+  
+  useEffect(()=>{
+    if(dataInput.Driver.length > 0 || selectedDriver.length > 0) setfireValidation({...fireValidations, Driver: false})
+    if(dataInput.Unidad.length > 0 || selectedUnidad.length > 0) setfireValidation({...fireValidations, Unidad: false})
+      
+  },[dataInput.Driver, dataInput.Unidad, selectedDriver, selectedUnidad]);
 
   
   const handleAsignar = () => {
-    const driverData = filterData(transportistas, "Driver", selectedDriver);
-    const unidadData = filterData(UnidadesMid, "Unidad", selectedUnidad);
+    if(dataInput.Driver === '' || dataInput.Unidad === '') setfireValidation({Driver: true, Unidad: true})
 
-    // Limpia los inputs y selects un watcher para esto
-    setDataInput({ Driver: '', Unidad: '' });
-    setSelectedDriver('');
-    setSelectedUnidad('');
-    setDriversInfo([]);
-    setUnidadesInfo([]);
-  
-    if (!driverData.length || !unidadData.length) return;
-  
-    const newEntry: AsigUnidadesProps = {
-      Driver: driverData[0].Driver,
-      Unidad: unidadData[0].Unidad,
-      Placa: unidadData[0].Placa,
-      NIV: unidadData[0].NIV,
-      "Estatus vehículo": unidadData[0]['Estatus vehículo'],
-      "Tipo vehículo": unidadData[0]['Tipo vehículo'],
-      Operacion: driverData[0].Operacion,
-      Estacion: driverData[0].Estacion,
-      Grupo: unidadData[0].Grupo
-    };
-  
-    // Verifica que no haya campos vacíos
-    const hasEmptyFields = Object.values(newEntry).some(value => value === "");
-    if (hasEmptyFields) return;
-  
-    // 🔍 Validación para evitar asignar misma unidad al mismo driver
-    const isDuplicate = asigUnidData.some(
-      entry =>
-        entry.Driver.trim().toLowerCase() === newEntry.Driver.trim().toLowerCase() &&
-        entry.Unidad.trim().toLowerCase() === newEntry.Unidad.trim().toLowerCase()
-    );
-  
-    if (isDuplicate) {
-      alert("Este conductor ya tiene asignada esta unidad.");
-      return;
-    }
+    if(selectedDriver.length > 0 && selectedUnidad.length > 0) {
 
-    setAsigUnidData(prev => [...prev, newEntry]);
+      const driverData = filterData(transportistas, "Driver", selectedDriver);
+      const unidadData = filterData(UnidadesMid, "Unidad", selectedUnidad);
+
+      // Limpia los inputs y selects
+      setDataInput({ Driver: '', Unidad: '' });
+      setfireValidation({Driver: false, Unidad: false})
+      setSelectedUnidad('');
+      setSelectedDriver('');
+      setDriversInfo([]);
+      setUnidadesInfo([]);
+    
+      if (!driverData.length || !unidadData.length) return;
+    
+      const newEntry: AsigUnidadesProps = {
+        Driver: driverData[0].Driver,
+        Unidad: unidadData[0].Unidad,
+        Placa: unidadData[0].Placa,
+        NIV: unidadData[0].NIV,
+        "Estatus vehículo": unidadData[0]['Estatus vehículo'],
+        "Tipo vehículo": unidadData[0]['Tipo vehículo'],
+        Operacion: driverData[0].Operacion,
+        Estacion: driverData[0].Estacion,
+        Grupo: unidadData[0].Grupo
+      };
+    
+      // Verifica que no haya campos vacíos
+      const hasEmptyFields = Object.values(newEntry).some(value => value === "");
+      if (hasEmptyFields) return;
+    
+      // 🔍 Validación para evitar asignar misma unidad al mismo driver
+      const isDuplicate = asigUnidData.some(
+        entry =>
+          entry.Driver.trim().toLowerCase() === newEntry.Driver.trim().toLowerCase() &&
+          entry.Unidad.trim().toLowerCase() === newEntry.Unidad.trim().toLowerCase()
+      );
+    
+      if (isDuplicate) {
+        alert("Este conductor ya tiene asignada esta unidad.");
+        return;
+      }
+
+      setAsigUnidData(prev => [...prev, newEntry]);
+      }
   };  
   
   //Table
   const headerTitles = ["Driver","Unidad","Placa","NIV","Estatus vehículo","Tipo vehículo","Operacion","Estacion","Grupo"];
   const [selectedRow, setSelectedRow] = useState<Record<string,any>>({});
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(()=>{
     console.log("Table",asigUnidData);
   },[asigUnidData])
-
-  const handleLiberar = () => {
-    setAsigUnidData(prev => prev.filter(entry => entry.Driver !== selectedDriver));
-    setSelectedDriver('');
-  };
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const closeModal = () => {
     setIsModalVisible(false);
   };
 
   const onButtonClick = () => {
+    const indexPosition = asigUnidData.findIndex(item => item.Driver === selectedRow.Driver);
+    asigUnidData.splice(indexPosition, 1)
     closeModal();
   }
+
   return (
     <DashboardLayout>
       <AsignUnidContainer>
@@ -162,6 +173,8 @@ export const AsigUnidades = () => {
           onChange={onDriverchange}
           setSelected={setSelectedDriver}
           disabledOptions={asigUnidData.map(item => item.Driver.trim())}
+          error={fireValidations.Driver}
+          message="Por favor, llena todos los campos"
         />
         <SearchInput
         label='Unidades'
@@ -171,6 +184,8 @@ export const AsigUnidades = () => {
         setSelected={setSelectedUnidad}
         options={unidadesInfo.map(item => item.Unidad.trim())}
         disabledOptions={asigUnidData.map(item => item.Unidad.trim())}
+        error={fireValidations.Unidad}
+        message="Por favor, llena todos los campos"
         />
         <div className='center'>
         <Button onClick={handleAsignar}>Asignar</Button>
