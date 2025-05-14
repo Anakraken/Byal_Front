@@ -130,7 +130,7 @@ export const CustomTable = <T extends Record<string, any>>({
                 key={i}
                 status={row[`${inactiveKey}`]}
                 onClick={() => handleRowClick(row)}
-                isEditable={isEditable? 'true' : 'false'}
+                iseditable={isEditable? 'true' : 'false'}
               >
                 {titles.map((key, index) => (
                   <Rows key={index}>{row[key]}</Rows>
@@ -178,7 +178,9 @@ setIsModalVisible={setIsModalVisible}
 >
     <Modal isVisible={isModalVisible} onBackClick={closeModal}>
         <p>Driver: {selectedRow.Driver}</p>
-        <p>Driver: {selectedRow.Unidad}</p>
-      <Button onClick={onButtonClick}>Liberar Driver</Button>
+        <p>Driver: {selectedRow.Unidad}</p> 
+        <br/>
+        {selectedRow["Estatus vehículo"] === "Inactivo" && <p>Informacion de Inactividad</p>}
+      <Button onClick={onButtonClick}>Desasignar</Button>
     </Modal>
 </CustomTable> */}

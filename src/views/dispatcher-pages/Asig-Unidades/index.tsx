@@ -12,9 +12,6 @@ import { filterData,handleInput } from '../../../lib/functions/input-functions';
 import { Modal } from '../../../components/Modals';
 
 export const AsigUnidades = () => {
-  //Table
-  const headerTitles = ["Driver","Unidad","Placa","NIV","Estatus vehículo","Tipo vehículo","Operacion","Estacion","Grupo"]
-
   // Selects
   const [selectedValue, setSelectedValue] = useState("");
   const opciones = ["Opción 1", "Opción 2", "Opción 3"];
@@ -25,9 +22,9 @@ export const AsigUnidades = () => {
 
   //Data from input
   const [dataInput, setDataInput] = useState({Driver:'', Unidad:''});
-  //Data new object
-  const initialState: AsigUnidadesProps[] = [];
-  const [asigUnidData, setAsigUnidData] = useState(initialState);
+  
+  //New object (Este se va a enviar a la base de datos)
+  const [asigUnidData, setAsigUnidData] = useState<AsigUnidadesProps[]>([]);
 
   //Sercher drivers
   const [driversInfo, setDriversInfo] = useState<TransportistaProps[]>([]);
@@ -103,6 +100,8 @@ export const AsigUnidades = () => {
     setAsigUnidData(prev => [...prev, newEntry]);
   };  
   
+  //Table
+  const headerTitles = ["Driver","Unidad","Placa","NIV","Estatus vehículo","Tipo vehículo","Operacion","Estacion","Grupo"];
   const [selectedRow, setSelectedRow] = useState<Record<string,any>>({});
 
   useEffect(()=>{
@@ -189,8 +188,10 @@ export const AsigUnidades = () => {
         >
             <Modal isVisible={isModalVisible} onBackClick={closeModal}>
                <p>Driver: {selectedRow.Driver}</p>
-               <p>Driver: {selectedRow.Unidad}</p>
-             <Button onClick={onButtonClick}>Liberar Driver</Button>
+               <p>Driver: {selectedRow.Unidad}</p> 
+               <br/>
+               {selectedRow["Estatus vehículo"] === "Inactivo" && <p>Informacion de Inactividad</p>}
+             <Button onClick={onButtonClick}>Desasignar</Button>
            </Modal>
         </CustomTable>
         </Column3>

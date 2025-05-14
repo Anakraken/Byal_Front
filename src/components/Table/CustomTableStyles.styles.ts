@@ -34,11 +34,11 @@ export const TableContainer = styled.div<TableConProp>`
 
 interface RowProps {
   status: string;
-  isEditable?: string
+  iseditable?: string
 }
 
 export const TableRow = styled.tr<RowProps>`
-  cursor: ${({ status, isEditable }) => (status === "Inactivo" || isEditable === "true") ? 'pointer' : "default"};
+  cursor: ${({ status, iseditable }) => (status === "Inactivo" || iseditable === "true") ? 'pointer' : "default"};
   background-color: ${({ status }) => status === "Inactivo" ? colors.softblue : "white"};
 
   &:hover {
