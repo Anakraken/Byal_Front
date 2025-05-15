@@ -10,18 +10,23 @@ import { SearchInput } from '../../../components/Inputs/Sercher';
 import { TransportistaProps, UnidadesMidProps, sanitizeUnidadesMid, AsigUnidadesProps } from '../../../lib/types/dispatcherTypes';
 import { filterData,handleInput } from '../../../lib/functions/input-functions';
 import { Modal } from '../../../components/Modals';
+import { useAppDispatch, useAppSelector } from '../../../redux/features/hooks';
+import { setAsig, removeAsig } from '../../../redux/features/asigUnids/asigUnidsSlice';
+
 
 export const AsigUnidades = () => {
+  // Redux
+  const dispatch = useAppDispatch();
+  const asigUnidData = useAppSelector(state => state.asigUnids);
+
   //Data from input
   const [dataInput, setDataInput] = useState({Driver:'', Unidad:''});
   const [fireValidations, setfireValidation] = useState({Driver:false, Unidad:false})
-  
-  //New object (Este se va a enviar a la base de datos)
-  const [asigUnidData, setAsigUnidData] = useState<AsigUnidadesProps[]>([]);
 
   //Sercher drivers
   const [driversInfo, setDriversInfo] = useState<TransportistaProps[]>([]);
   const [selectedDriver, setSelectedDriver] = useState('');
+  const disabledOptionsDriver = asigUnidData.map(item => item.Driver.toLowerCase());
 
   const onDriverchange = (e:React.ChangeEvent<HTMLInputElement>) => { 
       const searchTerm = e.target.value.trim().toLowerCase();
@@ -30,9 +35,14 @@ export const AsigUnidades = () => {
       setDriversInfo(filtered);
   }
 
+  const filteredDrivers = driversInfo.filter(driver =>
+    !disabledOptionsDriver.includes(driver.Driver.toLowerCase())
+  );
+
   //Sercher unidades:
   const [unidadesInfo, setUnidadesInfo] = useState<UnidadesMidProps[]>([]);
   const [selectedUnidad, setSelectedUnidad] = useState('');
+  const disabledOptionsUnidad = asigUnidData.map(item => item.Unidad.toLowerCase());
 
   const onUnidadeschange = (e:React.ChangeEvent<HTMLInputElement>) => { 
       const searchTerm = e.target.value.toLowerCase();
@@ -41,7 +51,11 @@ export const AsigUnidades = () => {
       const datosLimpios = sanitizeUnidadesMid(filtered);
       setUnidadesInfo(datosLimpios);
   };
-
+  
+  const filteredUnidades = unidadesInfo.filter(unidad =>
+    !disabledOptionsUnidad.includes(unidad.Unidad.toLowerCase())
+  );
+  
   // Limpia los serchers cuando no hay texto en el input
   useEffect(()=>{
     if(dataInput.Driver === "") setDriversInfo([]);
@@ -101,8 +115,11 @@ export const AsigUnidades = () => {
         return;
       }
 
-      setAsigUnidData(prev => [...prev, newEntry]);
+      if (!hasEmptyFields && !isDuplicate) {
+        dispatch(setAsig(newEntry));
       }
+
+    }
   };  
   
   // Selects
@@ -155,13 +172,12 @@ export const AsigUnidades = () => {
   };
 
   const onButtonClick = () => {
-    const indexPosition = asigUnidData.findIndex(item => item.Driver === selectedRow.Driver);
-    const newData = [...asigUnidData];
-    newData.splice(indexPosition, 1);
-    setAsigUnidData(newData);
-    closeModal();
-  }; 
-
+    if (selectedRow?.Driver) {
+      dispatch(removeAsig({ Driver: selectedRow.Driver }));
+      closeModal();
+    }
+  };
+  
   const handleSelect = (value: string, name: string) => {
     const updatedFilters = {
       ...filters,
@@ -219,11 +235,11 @@ export const AsigUnidades = () => {
         <SearchInput
           label="Driver"
           name="Driver"
-          options={driversInfo.map(item => item.Driver.trim())}
+          options={filteredDrivers.map(item => item.Driver.trim())}
           value={dataInput.Driver}
           onChange={onDriverchange}
           setSelected={setSelectedDriver}
-          disabledOptions={asigUnidData.map(item => item.Driver.trim())}
+          disabledOptions={disabledOptionsDriver}
           error={fireValidations.Driver}
           message="Por favor, llena todos los campos"
         />
@@ -233,8 +249,8 @@ export const AsigUnidades = () => {
         value={dataInput.Unidad}
         onChange={onUnidadeschange}
         setSelected={setSelectedUnidad}
-        options={unidadesInfo.map(item => item.Unidad.trim())}
-        disabledOptions={asigUnidData.map(item => item.Unidad.trim())}
+        options={filteredUnidades.map(item => item.Unidad.trim())}
+        disabledOptions={disabledOptionsUnidad}
         error={fireValidations.Unidad}
         message="Por favor, llena todos los campos"
         />

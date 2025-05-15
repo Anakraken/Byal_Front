@@ -1,17 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './features/auth/authSlice';
+import asigUnidsReducer from './features/asigUnids/asigUnidsSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from '@reduxjs/toolkit';
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  asigUnids: asigUnidsReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth'], // qué slices quieres guardar
+  whitelist: ['auth','asigUnids'], // qué slices quieres guardar
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
