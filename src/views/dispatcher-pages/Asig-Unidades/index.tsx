@@ -105,10 +105,50 @@ export const AsigUnidades = () => {
       }
   };  
   
+  // Selects
+  const opcionesEstatus = ["Todos", ...Array.from(
+    new Set(UnidadesMid.map(item => item["Estatus vehículo"].trim().toLowerCase()))
+  )].map(status => status.charAt(0).toUpperCase() + status.slice(1));
+  
+  const opcionesTipo = ["Todos", ...Array.from(
+    new Set(UnidadesMid.map(item => item["Tipo vehículo"].trim().toLowerCase()))
+  )].map(status => status.charAt(0).toUpperCase() + status.slice(1));
+  
+  const opcionesOperacion = ["Todos", ...Array.from(
+    new Set(transportistas.map(item => item.Operacion.toString().trim().toLowerCase()))
+  )].map(status => status.charAt(0).toUpperCase() + status.slice(1));
+  
+
   //Table
   const headerTitles = ["Driver","Unidad","Placa","NIV","Estatus vehículo","Tipo vehículo","Operacion","Estacion","Grupo"];
   const [selectedRow, setSelectedRow] = useState<Record<string,any>>({});
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [filteredTableData, setFilteredTableData] = useState<AsigUnidadesProps[]>([]);
+  const [filters, setFilters] = useState({
+    estatus: 'Todos',
+    tipo: 'Todos',
+    operacion: 'Todos'
+  });
+
+  useEffect(() => {
+    const filtered = asigUnidData.filter(item => {
+      const matchEstatus =
+        filters.estatus === 'Todos' ||
+        item["Estatus vehículo"].toLowerCase() === filters.estatus.toLowerCase();
+  
+      const matchTipo =
+        filters.tipo === 'Todos' ||
+        item["Tipo vehículo"].toLowerCase() === filters.tipo.toLowerCase();
+  
+      const matchOperacion =
+        filters.operacion === 'Todos' ||
+        item["Operacion"].toString().toLowerCase() === filters.operacion.toLowerCase();
+  
+      return matchEstatus && matchTipo && matchOperacion;
+    });
+  
+    setFilteredTableData(filtered);
+  }, [asigUnidData, filters]);  
 
   const closeModal = () => {
     setIsModalVisible(false);
@@ -116,40 +156,38 @@ export const AsigUnidades = () => {
 
   const onButtonClick = () => {
     const indexPosition = asigUnidData.findIndex(item => item.Driver === selectedRow.Driver);
-    asigUnidData.splice(indexPosition, 1)
+    const newData = [...asigUnidData];
+    newData.splice(indexPosition, 1);
+    setAsigUnidData(newData);
     closeModal();
-  }
+  }; 
 
-  // Selects
-  const [selectedValue, setSelectedValue] = useState("");
-  const opcionesEstatus = Array.from(
-    new Set(
-      UnidadesMid.map(item =>
-        item["Estatus vehículo"].trim().toLowerCase()
-      )
-    )
-  ).map(status => status.charAt(0).toUpperCase() + status.slice(1));
+  const handleSelect = (value: string, name: string) => {
+    const updatedFilters = {
+      ...filters,
+      [name]: value
+    };
   
-  const opcionesTipo = Array.from(
-    new Set(
-      UnidadesMid.map(item =>
-        item["Tipo vehículo"].trim().toLowerCase()
-      )
-    )
-  ).map(status => status.charAt(0).toUpperCase() + status.slice(1));
-
-  const opcionesOperacion = Array.from(
-    new Set(
-      transportistas.map(item =>
-        item.Operacion.toString().trim().toLowerCase()
-      )
-    )
-  ).map(status => status.charAt(0).toUpperCase() + status.slice(1));
+    setFilters(updatedFilters);
   
-  const handleSelect = (value: string) => {
-    // setSelectedValue(value);
-    console.log(value)
-  };
+    const filtered = asigUnidData.filter(item => {
+      const matchEstatus =
+        updatedFilters.estatus === 'Todos' ||
+        item["Estatus vehículo"].toLowerCase() === updatedFilters.estatus.toLowerCase();
+  
+      const matchTipo =
+        updatedFilters.tipo === 'Todos' ||
+        item["Tipo vehículo"].toLowerCase() === updatedFilters.tipo.toLowerCase();
+  
+      const matchOperacion =
+        updatedFilters.operacion === 'Todos' ||
+        item["Operacion"].toString().toLowerCase() === updatedFilters.operacion.toLowerCase();
+  
+      return matchEstatus && matchTipo && matchOperacion;
+    });
+  
+    setFilteredTableData(filtered);
+  };  
 
   return (
     <DashboardLayout>
@@ -159,19 +197,19 @@ export const AsigUnidades = () => {
         <Select
         label="Estatus vehículo"
         options={opcionesEstatus}
-        onSelect={handleSelect}
+        onSelect={(value) => handleSelect(value, "estatus")}
         name="estatus"
         />
         <Select
         label="Tipo vehículo"
         options={opcionesTipo}
-        onSelect={handleSelect}
+        onSelect={(value) => handleSelect(value, "tipo")}
         name="tipo"
         />
         <Select
         label="Operacion"
         options={opcionesOperacion}
-        onSelect={handleSelect}
+        onSelect={(value) => handleSelect(value, "operacion")}
         name="operacion"
         />
         </Column1>
@@ -206,7 +244,7 @@ export const AsigUnidades = () => {
         </Column2>
         <Column3 className='row3'>
         <CustomTable 
-        data={asigUnidData} 
+        data={filteredTableData} 
         header={headerTitles} 
         inactiveKey={"Estatus vehículo"}
         inactiveValue={"Inactivo"}
