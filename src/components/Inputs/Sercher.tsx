@@ -30,6 +30,9 @@ export const SearchInput = <T extends string | number>({
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // NEW: refs for each item
+  const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -48,12 +51,12 @@ export const SearchInput = <T extends string | number>({
 
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      setHighlightedIndex(prev => (prev + 1) % filteredOptions.length);
+      setHighlightedIndex((prev) => (prev + 1) % filteredOptions.length);
     }
 
     if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setHighlightedIndex(prev => (prev - 1 + filteredOptions.length) % filteredOptions.length);
+      setHighlightedIndex((prev) => (prev - 1 + filteredOptions.length) % filteredOptions.length);
     }
 
     if (e.key === 'Enter' && highlightedIndex >= 0) {
@@ -72,6 +75,14 @@ export const SearchInput = <T extends string | number>({
   useEffect(() => {
     setSearchTerm(value.toString());
   }, [value]);
+
+  // Scroll to highlighted item when it changes
+  useEffect(() => {
+    const el = itemRefs.current[highlightedIndex];
+    if (el) {
+      el.scrollIntoView({ block: 'nearest' });
+    }
+  }, [highlightedIndex]);
 
   const filteredOptions =
     searchTerm.trim() === ''
@@ -109,17 +120,23 @@ export const SearchInput = <T extends string | number>({
       />
 
       {showOptions && filteredOptions.length > 0 && (
-        <ul className="suggestion_list">
+        <ul
+          className="suggestion_list"
+          style={{ maxHeight: '200px', overflowY: 'auto' }} // scroll container
+        >
           {filteredOptions.map((item, idx) => {
             const isDisabled = disabledOptions?.includes(item);
             return (
               <ItemList
                 key={idx}
+                ref={(el) => {
+                  itemRefs.current[idx] = el;
+                }}
                 onClick={() => {
                   if (!isDisabled) handleClickOption(item);
                 }}
-                highlight={idx === highlightedIndex ? 'true' : 'false'}
-                isdisabled={isDisabled ? 'true' : 'false'}
+                highlight={String(idx === highlightedIndex)}
+                isdisabled={String(isDisabled)}
               >
                 {item}
               </ItemList>

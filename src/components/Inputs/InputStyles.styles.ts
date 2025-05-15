@@ -160,7 +160,7 @@ width: 100%;
 `;
 
 type ItemListProps = {
-  highlight: string;
+  highlight?: string;
   isdisabled?: string;
 };
 
